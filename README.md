@@ -24,7 +24,6 @@
 - **自动地区检测** | Automatic location detection
 - **中国用户优化** | China-optimized with jsDelivr CDN + proxy fallback
 - **国际用户支持** | International users with direct GitHub access
-- **100%可访问性** | 100% accessibility guarantee
 
 ### 📚 完整教材库 | Complete Textbook Database
 - **2,371+ 本教材** | 2,371+ textbooks
@@ -76,35 +75,20 @@ window.FALLBACK_PROXY_CONFIG = {
 | jsDelivr成功率 Success Rate | 63.3% |
 | 备用覆盖率 Fallback Coverage | 100% |
 
-## 🤝 贡献 | Contributing
-
-欢迎贡献代码！| Contributions welcome!
-1. Fork 本仓库 | Fork the repository
-2. 创建功能分支 | Create feature branch: `git checkout -b feature-name`
-3. 提交更改 | Commit changes and submit pull request
-
-## 📄 许可证 | License
-
-MIT License - 详见 [LICENSE](LICENSE) 文件 | See [LICENSE](LICENSE) file
-
-## ⚠️ 免责声明 | Disclaimer
-
-本项目仅用于教育和研究目的。所有教材版权归各自出版社和作者所有。请支持正版出版物。
-
-This project is for educational and research purposes only. All textbooks are property of their respective publishers and authors. Please support official publications.
-
 ## 🙏 致谢 | Acknowledgments
 
 - **TapXWorld/ChinaTextbook**: 原始教材数据库 | Original textbook database
 - **jsDelivr**: 中国用户CDN服务 | CDN service for China users
 - **GitHub**: 可靠的文件托管 | Reliable file hosting
 
+### ⚠️ 免责声明 | Disclaimer
+
+本项目仅用于教育和研究目的。所有教材版权归各自出版社和作者所有。请支持正版出版物。
+
+This project is for educational and research purposes only. All textbooks are property of their respective publishers and authors. Please support official publications.
+
 ---
 
 <div align="center">
   <p>用❤️为中国教育而建 | Made with ❤️ for Chinese education</p>
-  <p>
-    <a href="https://github.com/rong2ren/textbook/issues">报告问题 Report Bug</a> •
-    <a href="https://github.com/rong2ren/textbook/issues">功能请求 Request Feature</a>
-  </p>
 </div> 
