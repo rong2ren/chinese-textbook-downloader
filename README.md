@@ -5,7 +5,7 @@
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 > 🎓 中国教材下载系统，支持全球访问优化  
-> Intelligent CDN-routed Chinese textbook download system with global access optimization
+> Chinese textbook download system with global access optimization
 
 
 ## 📸 截图 | Screenshots
