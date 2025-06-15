@@ -126,42 +126,42 @@
 </head>
 <body>
     <div class="test-container">
-        <h1>🌍 下载测试</h1>
+        <h1>🌍 下载测试 | Download Test</h1>
         <p>此页面用于测试中国教材网站的下载系统，确保为不同地区用户提供最佳的下载体验。</p>
-        <p><small>This page tests the download system for optimal download experience.</small></p>
+        <p><small>This page tests the Chinese textbook download system to ensure optimal download experience for users in different regions.</small></p>
         
         <div id="status" class="status loading">
-            🔍 正在检测您的位置...
+            🔍 正在检测您的位置... | Detecting your location...
         </div>
         
         <div class="info-grid">
             <div class="info-card">
-                <h4>🌐 浏览器信息</h4>
-                <p><strong>语言:</strong> <span id="browser-lang">-</span></p>
-                <p><strong>时区:</strong> <span id="browser-tz">-</span></p>
-                <p><strong>用户代理:</strong> <span id="user-agent">-</span></p>
+                <h4>🌐 浏览器信息 | Browser Info</h4>
+                <p><strong>语言 | Language:</strong> <span id="browser-lang">-</span></p>
+                <p><strong>时区 | Timezone:</strong> <span id="browser-tz">-</span></p>
+                <p><strong>用户代理 | User Agent:</strong> <span id="user-agent">-</span></p>
             </div>
             
             <div class="info-card">
-                <h4>📍 检测到的位置</h4>
-                <p><strong>国家:</strong> <span id="detected-country">-</span></p>
-                <p><strong>国家代码:</strong> <span id="detected-code">-</span></p>
-                <p><strong>城市:</strong> <span id="detected-city">-</span></p>
+                <h4>📍 检测到的位置 | Detected Location</h4>
+                <p><strong>国家 | Country:</strong> <span id="detected-country">-</span></p>
+                <p><strong>国家代码 | Country Code:</strong> <span id="detected-code">-</span></p>
+                <p><strong>城市 | City:</strong> <span id="detected-city">-</span></p>
             </div>
         </div>
         
 
         
         <div style="margin-top: 20px;">
-            <button class="test-button" onclick="testDownload()">🧪 测试下载</button>
-            <button class="test-button" onclick="redetectLocation()">🔄 重新检测位置</button>
+            <button class="test-button" onclick="testDownload()">🧪 测试下载 | Test Download</button>
+            <button class="test-button" onclick="redetectLocation()">🔄 重新检测位置 | Re-detect Location</button>
         </div>
         
         <div id="admin-test-section" style="margin-top: 20px; padding: 15px; background: #fff3cd; border: 1px solid #ffeaa7; border-radius: 8px; display: none;">
-            <h4>🧪 测试模式 (管理员)</h4>
-            <p>强制模拟不同地区用户进行测试:</p>
-            <button class="test-button" onclick="forceTestAsChina()" style="background: #dc3545;">🇨🇳 模拟中国用户</button>
-            <button class="test-button" onclick="forceTestAsInternational()" style="background: #28a745;">🌍 模拟国际用户</button>
+            <h4>🧪 测试模式 (管理员) | Test Mode (Admin)</h4>
+            <p>强制模拟不同地区用户进行测试 | Force simulate users from different regions for testing:</p>
+            <button class="test-button" onclick="forceTestAsChina()" style="background: #dc3545;">🇨🇳 模拟中国用户 | Simulate China User</button>
+            <button class="test-button" onclick="forceTestAsInternational()" style="background: #28a745;">🌍 模拟国际用户 | Simulate International User</button>
         </div>
         
         <div id="test-results" style="margin-top: 20px;"></div>
@@ -172,9 +172,9 @@
         let detector = null;
         
         async function initTest() {
-            // 显示浏览器信息
-            document.getElementById('browser-lang').textContent = navigator.language || '未知';
-            document.getElementById('browser-tz').textContent = Intl.DateTimeFormat().resolvedOptions().timeZone || '未知';
+            // 显示浏览器信息 | Display browser info
+            document.getElementById('browser-lang').textContent = navigator.language || '未知 | Unknown';
+            document.getElementById('browser-tz').textContent = Intl.DateTimeFormat().resolvedOptions().timeZone || '未知 | Unknown';
             document.getElementById('user-agent').textContent = navigator.userAgent.substring(0, 50) + '...';
             
             // 初始化位置检测器
@@ -192,14 +192,14 @@
             const status = document.getElementById('status');
             status.className = 'status success';
             status.innerHTML = detector.isChina ? 
-                '🇨🇳 检测结果: 中国用户' : 
-                '🌍 检测结果: 国际用户';
+                '🇨🇳 检测结果: 中国用户 | Detection Result: China User' : 
+                '🌍 检测结果: 国际用户 | Detection Result: International User';
             
-            // 显示位置详情
+            // 显示位置详情 | Display location details
             if (detector.userLocation) {
-                document.getElementById('detected-country').textContent = detector.userLocation.country || '未知';
-                document.getElementById('detected-code').textContent = detector.userLocation.countryCode || '未知';
-                document.getElementById('detected-city').textContent = detector.userLocation.city || '未知';
+                document.getElementById('detected-country').textContent = detector.userLocation.country || '未知 | Unknown';
+                document.getElementById('detected-code').textContent = detector.userLocation.countryCode || '未知 | Unknown';
+                document.getElementById('detected-city').textContent = detector.userLocation.city || '未知 | Unknown';
             }
             
 
@@ -208,15 +208,15 @@
         function showError(error) {
             const status = document.getElementById('status');
             status.className = 'status error';
-            status.innerHTML = `❌ 检测失败: ${error.message}`;
+            status.innerHTML = `❌ 检测失败 | Detection Failed: ${error.message}`;
         }
         
         async function redetectLocation() {
             const status = document.getElementById('status');
             status.className = 'status loading';
-            status.innerHTML = '🔍 正在重新检测位置...';
+            status.innerHTML = '🔍 正在重新检测位置... | Re-detecting location...';
             
-            // 清空之前的结果
+            // 清空之前的结果 | Clear previous results
             document.getElementById('detected-country').textContent = '-';
             document.getElementById('detected-code').textContent = '-';
             document.getElementById('detected-city').textContent = '-';
@@ -245,25 +245,26 @@
             
             resultsDiv.innerHTML = `
                 <div class="status success">
-                    <strong>🧪 测试下载已启动: 请查看浏览器的下载管理器或下载文件夹，文件大小约20MB，下载可能需要一些时间</strong><br>
-                    <button onclick="this.parentElement.parentElement.innerHTML=''" style="margin-top: 10px; padding: 5px 10px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 12px;">✓ 知道了</button>
+                    <strong>🧪 测试下载已启动 | Test Download Started</strong><br>
+                    <span>请查看浏览器的下载管理器或下载文件夹，文件大小约20MB，下载可能需要一些时间</span><br>
+                    <small>Please check your browser's download manager or download folder. File size is about 20MB, download may take some time.</small><br>
+                    <button onclick="this.parentElement.parentElement.innerHTML=''" style="margin-top: 10px; padding: 5px 10px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 12px;">✓ 知道了 | Got it</button>
                 </div>
             `;
             
-            // 创建测试下载
+            // 创建测试下载 | Create test download
             const link = document.createElement('a');
             link.href = downloadUrl;
             link.download = '义务教育教科书·人文地理上册.pdf';
-            link.target = '_blank';
             
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
         }
         
-        // 强制测试模式函数
+        // 强制测试模式函数 | Force test mode functions
         function forceTestAsChina() {
-            // 强制设置为中国用户
+            // 强制设置为中国用户 | Force set as China user
             detector.isChina = true;
             detector.userLocation = {
                 country: 'China',
@@ -273,18 +274,18 @@
             
             const status = document.getElementById('status');
             status.className = 'status success';
-            status.innerHTML = '🇨🇳 检测结果: 中国用户 (测试模式)';
+            status.innerHTML = '🇨🇳 检测结果: 中国用户 (测试模式) | Detection Result: China User (Test Mode)';
             
-            // 显示位置详情
-            document.getElementById('detected-country').textContent = 'China (测试)';
+            // 显示位置详情 | Display location details
+            document.getElementById('detected-country').textContent = 'China (测试 | Test)';
             document.getElementById('detected-code').textContent = 'CN';
-            document.getElementById('detected-city').textContent = 'Beijing (测试)';
+            document.getElementById('detected-city').textContent = 'Beijing (测试 | Test)';
             
 
         }
         
         function forceTestAsInternational() {
-            // 强制设置为国际用户
+            // 强制设置为国际用户 | Force set as international user
             detector.isChina = false;
             detector.userLocation = {
                 country: 'United States',
@@ -294,28 +295,28 @@
             
             const status = document.getElementById('status');
             status.className = 'status success';
-            status.innerHTML = '🌍 检测结果: 国际用户 (测试模式)';
+            status.innerHTML = '🌍 检测结果: 国际用户 (测试模式) | Detection Result: International User (Test Mode)';
             
-            // 显示位置详情
-            document.getElementById('detected-country').textContent = 'United States (测试)';
+            // 显示位置详情 | Display location details
+            document.getElementById('detected-country').textContent = 'United States (测试 | Test)';
             document.getElementById('detected-code').textContent = 'US';
-            document.getElementById('detected-city').textContent = 'New York (测试)';
+            document.getElementById('detected-city').textContent = 'New York (测试 | Test)';
             
 
         }
 
-        // 检查是否为管理员模式
+        // 检查是否为管理员模式 | Check if admin mode
         function checkAdminMode() {
             const urlParams = new URLSearchParams(window.location.search);
             const isAdmin = urlParams.get('isAdmin') === 'true';
             
             if (isAdmin) {
                 document.getElementById('admin-test-section').style.display = 'block';
-                console.log('🔧 管理员模式已启用');
+                console.log('🔧 管理员模式已启用 | Admin mode enabled');
             }
         }
 
-        // 页面加载时初始化
+        // 页面加载时初始化 | Initialize when page loads
         document.addEventListener('DOMContentLoaded', function() {
             checkAdminMode();
             initTest();

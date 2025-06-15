@@ -519,20 +519,20 @@ function populateSubjects(gradeCard, level, grade) {
         }
         subjectBtn.className = className;
         
-        // Add appropriate icons
-        const icon = document.createElement('i');
-        if (isPractice) {
-            icon.className = 'fas fa-pencil-alt';
-        } else if (isMath) {
-            icon.className = 'fas fa-calculator';
-        } else if (isChinese) {
-            icon.className = 'fas fa-language';
+        // Add appropriate icons only for math and Chinese
+        if (isMath || isChinese) {
+            const icon = document.createElement('i');
+            if (isMath) {
+                icon.className = 'fas fa-calculator';
+            } else if (isChinese) {
+                icon.className = 'fas fa-language';
+            }
+            subjectBtn.appendChild(icon);
+            subjectBtn.appendChild(document.createTextNode(` ${subject}`));
         } else {
-            icon.className = 'fas fa-book';
+            // No icon for other subjects
+            subjectBtn.appendChild(document.createTextNode(subject));
         }
-        
-        subjectBtn.appendChild(icon);
-        subjectBtn.appendChild(document.createTextNode(` ${subject}`));
         
         subjectBtn.addEventListener('click', function() {
             selectSubject(this, gradeCard, level, grade, subject);

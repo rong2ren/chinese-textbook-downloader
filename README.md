@@ -16,6 +16,12 @@
 ### 小学界面 | Elementary School Interface
 ![Elementary School](screenshots/elementary.png)
 
+### 初中界面 | Middle School Interface
+![Middle School](screenshots/middle.png)
+
+### 高中界面 | High School Interface
+![High School](screenshots/high.png)
+
 ### 大学界面 | University Level Interface
 ![University Interface](screenshots/university.png)
 
