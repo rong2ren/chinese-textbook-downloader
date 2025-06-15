@@ -36,7 +36,7 @@ class URLTester:
         
         # URL templates
         self.jsdelivr_template = "https://cdn.jsdelivr.net/gh/TapXWorld/ChinaTextbook@master/{}"
-        self.fallback_template = "https://ghfast.top/https://raw.githubusercontent.com/TapXWorld/ChinaTextbook/master/{}"
+        # self.fallback_template = "https://ghfast.top/https://raw.githubusercontent.com/TapXWorld/ChinaTextbook/master/{}"
     
     def test_jsdelivr_link(self, file_path: str) -> Tuple[str, bool, int, str]:
         """Test a single jsDelivr link
@@ -83,7 +83,8 @@ class URLTester:
         else:
             # jsDelivr failed, use fallback proxy for China users
             encoded_path = urllib.parse.quote(file_path, safe='/')
-            result['china_url'] = self.fallback_template.format(encoded_path)
+            # result['china_url'] = self.fallback_template.format(encoded_path)
+            result['china_url'] = github_url
         
         return result, jsdelivr_works, status_code
     
@@ -130,11 +131,11 @@ class URLTester:
                 except Exception as e:
                     # Fallback in case of error
                     encoded_path = urllib.parse.quote(file_path, safe='/')
-                    fallback_url = self.fallback_template.format(encoded_path)
+                    # fallback_url = self.fallback_template.format(encoded_path)
                     results[github_url] = {
                         'urls': {
                             'international_url': github_url,
-                            'china_url': fallback_url
+                            'china_url': github_url
                         },
                         'jsdelivr_works': False,
                         'status_code': 0,

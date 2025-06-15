@@ -150,13 +150,7 @@
             </div>
         </div>
         
-        <div class="url-examples">
-            <h4>📥 下载策略</h4>
-            <p><strong>主要下载链接:</strong></p>
-            <code id="primary-url">-</code>
-            <p><strong>备用下载链接:</strong></p>
-            <code id="fallback-url">-</code>
-        </div>
+
         
         <div style="margin-top: 20px;">
             <button class="test-button" onclick="testDownload()">🧪 测试下载</button>
@@ -208,21 +202,7 @@
                 document.getElementById('detected-city').textContent = detector.userLocation.city || '未知';
             }
             
-            // 显示URL示例 - 使用实际的textbook data中的URL
-            const sampleEntry = {
-                international_url: "https://raw.githubusercontent.com/TapXWorld/ChinaTextbook/master/%E5%88%9D%E4%B8%AD/%E4%BA%BA%E6%96%87%E5%9C%B0%E7%90%86/%E7%BB%9F%E7%BC%96%E7%89%88-%E4%BA%BA%E6%B0%91%E6%95%99%E8%82%B2%E5%87%BA%E7%89%88%E7%A4%BE/%E4%B8%83%E5%B9%B4%E7%BA%A7/%E4%B9%89%E5%8A%A1%E6%95%99%E8%82%B2%E6%95%99%E7%A7%91%E4%B9%A6%C2%B7%E4%BA%BA%E6%96%87%E5%9C%B0%E7%90%86%E4%B8%8A%E5%86%8C.pdf",
-                china_url: "https://ghfast.top/https://raw.githubusercontent.com/TapXWorld/ChinaTextbook/master/%E5%88%9D%E4%B8%AD/%E4%BA%BA%E6%96%87%E5%9C%B0%E7%90%86/%E7%BB%9F%E7%BC%96%E7%89%88-%E4%BA%BA%E6%B0%91%E6%95%99%E8%82%B2%E5%87%BA%E7%89%88%E7%A4%BE/%E4%B8%83%E5%B9%B4%E7%BA%A7/%E4%B9%89%E5%8A%A1%E6%95%99%E8%82%B2%E6%95%99%E7%A7%91%E4%B9%A6%C2%B7%E4%BA%BA%E6%96%87%E5%9C%B0%E7%90%86%E4%B8%8A%E5%86%8C.pdf",
-                jsdelivr_works: false,
-                file_size: 21220488
-            };
-            
-            if (detector.isChina) {
-                document.getElementById('primary-url').textContent = sampleEntry.china_url;
-                document.getElementById('fallback-url').textContent = sampleEntry.international_url;
-            } else {
-                document.getElementById('primary-url').textContent = sampleEntry.international_url;
-                document.getElementById('fallback-url').textContent = 'N/A (不需要备用链接)';
-            }
+
         }
         
         function showError(error) {
@@ -240,8 +220,6 @@
             document.getElementById('detected-country').textContent = '-';
             document.getElementById('detected-code').textContent = '-';
             document.getElementById('detected-city').textContent = '-';
-            document.getElementById('primary-url').textContent = '-';
-            document.getElementById('fallback-url').textContent = '-';
             
             try {
                 await detector.detectLocationWithAPI();
@@ -302,15 +280,7 @@
             document.getElementById('detected-code').textContent = 'CN';
             document.getElementById('detected-city').textContent = 'Beijing (测试)';
             
-            // 显示URL示例 - 使用实际的textbook data中的URL
-            const sampleEntry = {
-                international_url: "https://raw.githubusercontent.com/TapXWorld/ChinaTextbook/master/%E5%88%9D%E4%B8%AD/%E4%BA%BA%E6%96%87%E5%9C%B0%E7%90%86/%E7%BB%9F%E7%BC%96%E7%89%88-%E4%BA%BA%E6%B0%91%E6%95%99%E8%82%B2%E5%87%BA%E7%89%88%E7%A4%BE/%E4%B8%83%E5%B9%B4%E7%BA%A7/%E4%B9%89%E5%8A%A1%E6%95%99%E8%82%B2%E6%95%99%E7%A7%91%E4%B9%A6%C2%B7%E4%BA%BA%E6%96%87%E5%9C%B0%E7%90%86%E4%B8%8A%E5%86%8C.pdf",
-                china_url: "https://ghfast.top/https://raw.githubusercontent.com/TapXWorld/ChinaTextbook/master/%E5%88%9D%E4%B8%AD/%E4%BA%BA%E6%96%87%E5%9C%B0%E7%90%86/%E7%BB%9F%E7%BC%96%E7%89%88-%E4%BA%BA%E6%B0%91%E6%95%99%E8%82%B2%E5%87%BA%E7%89%88%E7%A4%BE/%E4%B8%83%E5%B9%B4%E7%BA%A7/%E4%B9%89%E5%8A%A1%E6%95%99%E8%82%B2%E6%95%99%E7%A7%91%E4%B9%A6%C2%B7%E4%BA%BA%E6%96%87%E5%9C%B0%E7%90%86%E4%B8%8A%E5%86%8C.pdf",
-                jsdelivr_works: false
-            };
-            
-            document.getElementById('primary-url').textContent = sampleEntry.china_url;
-            document.getElementById('fallback-url').textContent = sampleEntry.international_url;
+
         }
         
         function forceTestAsInternational() {
@@ -331,15 +301,7 @@
             document.getElementById('detected-code').textContent = 'US';
             document.getElementById('detected-city').textContent = 'New York (测试)';
             
-            // 显示URL示例 - 使用实际的textbook data中的URL
-            const sampleEntry = {
-                international_url: "https://raw.githubusercontent.com/TapXWorld/ChinaTextbook/master/%E5%88%9D%E4%B8%AD/%E4%BA%BA%E6%96%87%E5%9C%B0%E7%90%86/%E7%BB%9F%E7%BC%96%E7%89%88-%E4%BA%BA%E6%B0%91%E6%95%99%E8%82%B2%E5%87%BA%E7%89%88%E7%A4%BE/%E4%B8%83%E5%B9%B4%E7%BA%A7/%E4%B9%89%E5%8A%A1%E6%95%99%E8%82%B2%E6%95%99%E7%A7%91%E4%B9%A6%C2%B7%E4%BA%BA%E6%96%87%E5%9C%B0%E7%90%86%E4%B8%8A%E5%86%8C.pdf",
-                china_url: "https://ghfast.top/https://raw.githubusercontent.com/TapXWorld/ChinaTextbook/master/%E5%88%9D%E4%B8%AD/%E4%BA%BA%E6%96%87%E5%9C%B0%E7%90%86/%E7%BB%9F%E7%BC%96%E7%89%88-%E4%BA%BA%E6%B0%91%E6%95%99%E8%82%B2%E5%87%BA%E7%89%88%E7%A4%BE/%E4%B8%83%E5%B9%B4%E7%BA%A7/%E4%B9%89%E5%8A%A1%E6%95%99%E8%82%B2%E6%95%99%E7%A7%91%E4%B9%A6%C2%B7%E4%BA%BA%E6%96%87%E5%9C%B0%E7%90%86%E4%B8%8A%E5%86%8C.pdf",
-                jsdelivr_works: false
-            };
-            
-            document.getElementById('primary-url').textContent = sampleEntry.international_url;
-            document.getElementById('fallback-url').textContent = 'N/A (不需要备用链接)';
+
         }
 
         // 检查是否为管理员模式

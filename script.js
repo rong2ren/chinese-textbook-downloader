@@ -1,5 +1,6 @@
 // Global variables
 let textbookDataInstance;
+let isChinaUser = null; // Cache the China detection result
 
 // Configuration-driven level management
 function getLevelConfig(level) {
@@ -202,8 +203,11 @@ document.addEventListener('DOMContentLoaded', async function() {
             // Detect user location
             await locationDetector.detectLocationWithAPI();
             
+            // Initialize China detection with location data
+            const isChina = initializeChinaDetection();
+            
             // Update UI based on location
-            updateUIForRegion(locationDetector.isChina);
+            updateUIForRegion(isChina);
             
             // Hide loading indicator
             const loadingIndicator = document.getElementById('loading-indicator');
@@ -214,7 +218,9 @@ document.addEventListener('DOMContentLoaded', async function() {
             console.log('✅ Location detection complete');
         } catch (error) {
             console.warn('⚠️ Location detection failed, using fallback:', error);
-            updateUIForRegion(true); // Default to China for safety
+            // Initialize China detection with fallback
+            const isChina = initializeChinaDetection();
+            updateUIForRegion(isChina);
             
             const loadingIndicator = document.getElementById('loading-indicator');
             if (loadingIndicator) {
@@ -223,7 +229,9 @@ document.addEventListener('DOMContentLoaded', async function() {
         }
     } else {
         console.warn('⚠️ LocationBasedDownloader not found, using legacy detection');
-        updateUIForRegion(shouldUseChinaUrls());
+        // Initialize China detection without location detector
+        const isChina = initializeChinaDetection();
+        updateUIForRegion(isChina);
     }
     
     // Remove debug console logs for production
@@ -972,38 +980,81 @@ function getSemesterDisplayName(semester) {
 }
 
 // Detect if user is in China and should use China-friendly URLs
-function shouldUseChinaUrls() {
+// Initialize China detection once and cache the result
+function initializeChinaDetection() {
+    // Check for URL parameter override first
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('isChina')) {
+        const isChinaParam = urlParams.get('isChina').toLowerCase();
+        isChinaUser = isChinaParam === 'true' || isChinaParam === '1';
+        console.log(`🔧 URL parameter override detected: isChina=${isChinaParam} → ${isChinaUser ? 'China mode' : 'International mode'}`);
+        return isChinaUser;
+    }
+    
+    // Use advanced location detection if available
+    if (locationDetector && locationDetector.isChina !== undefined) {
+        isChinaUser = locationDetector.isChina;
+        return isChinaUser;
+    }
+    
+    // Fallback to browser-based detection
     const language = navigator.language || navigator.userLanguage;
     const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     
     // Check for Chinese language or China timezone
-    return language.includes('zh-CN') || 
-           language.includes('zh') || 
-           timezone.includes('Shanghai') || 
-           timezone.includes('Beijing');
+    isChinaUser = language.includes('zh-CN') || 
+                  language.includes('zh') || 
+                  timezone.includes('Shanghai') || 
+                  timezone.includes('Beijing');
+    
+    return isChinaUser;
+}
+
+// Get cached China detection result (called during downloads)
+function shouldUseChinaUrls() {
+    // Return cached result if available
+    if (isChinaUser !== null) {
+        return isChinaUser;
+    }
+    
+    // Initialize if not cached yet (fallback)
+    return initializeChinaDetection();
 }
 
 // Get appropriate download URL based on user location
 function getDownloadUrl(book) {
-    // Use advanced location detection if available
-    const isChina = locationDetector ? locationDetector.isChina : shouldUseChinaUrls();
+    // Use shouldUseChinaUrls which handles URL parameter override and location detection
+    const isChina = shouldUseChinaUrls();
     
+    let finalUrl;
     if (isChina) {
-        // For China users: Use pre-computed china_url (jsDelivr or ghfast.top fallback)
-        if (book.china_url) return book.china_url;
-        else return book.download_url;
+        // For China users: Use pre-computed china_url (jsDelivr or configurable proxy fallback)
+        if (book.jsdelivr_works) {
+            finalUrl = book.china_url;
+            console.log(`🇨🇳 China user - jsDelivr URL: ${finalUrl}`);
+        } else {
+            const proxy = window.FALLBACK_PROXY_CONFIG ? window.FALLBACK_PROXY_CONFIG.getCurrentProxy() : 'https://ghfast.top/';
+            finalUrl = proxy + book.china_url;
+            console.log(`🇨🇳 China user - Proxy URL: ${finalUrl} (proxy: ${proxy})`);
+        }
     } else {
         // For international users: Use pre-computed international_url (GitHub direct)
         if (book.international_url) return book.international_url;
         else return book.download_url;
     }
+    
+    return finalUrl;
 }
 
 // Download from URL - uses pre-computed location-aware URLs with fallback support
 function downloadFromUrl(url, filename, book = null) {
     // Use pre-computed location-aware URL if available
     const actualUrl = book ? getDownloadUrl(book) : url;
-    const isChina = locationDetector ? locationDetector.isChina : shouldUseChinaUrls();
+    const isChina = shouldUseChinaUrls();
+    
+    // Log download initiation
+    console.log(`📥 Initiating download: ${filename}`);
+    console.log(`🔗 Download URL: ${actualUrl}`);
     
     // Show download warning for large files if user is in China
     if (book && isChina) {

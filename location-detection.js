@@ -126,7 +126,7 @@ class LocationBasedDownloader {
         
         return {
             primary: `https://cdn.jsdelivr.net/gh/TapXWorld/ChinaTextbook@master/${encodedPath}`,
-            fallback: `https://ghfast.top/https://raw.githubusercontent.com/TapXWorld/ChinaTextbook/master/${encodedPath}`,
+            fallback: `${window.FALLBACK_PROXY_CONFIG ? window.FALLBACK_PROXY_CONFIG.getCurrentProxy() : 'https://ghfast.top/'}https://raw.githubusercontent.com/TapXWorld/ChinaTextbook/master/${encodedPath}`,
             region: 'China'
         };
     }
