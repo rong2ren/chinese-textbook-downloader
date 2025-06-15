@@ -243,9 +243,7 @@ body {
     margin-bottom: 0.6rem;
 }
 
-.nav-btn:hover i {
-    /* No transform effect */
-}
+
 
 .nav-btn span {
     font-size: 1.05rem;
@@ -306,7 +304,7 @@ body {
 /* Grade Grid Styles */
 .grade-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(480px, 1fr));
     gap: 2rem;
     margin-top: 2rem;
 }
@@ -399,9 +397,7 @@ body {
     background: #f0f4ff;
 }
 
-.subject-btn:active {
-    /* No transform effect */
-}
+
 
 .subject-btn.active {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -410,9 +406,6 @@ body {
 }
 
 /* Math Subject Styling - Keep icon only */
-.subject-btn.math-subject {
-    /* Uses standard subject button styling */
-}
 
 .subject-btn.math-subject::before {
     content: "∑";
@@ -428,9 +421,6 @@ body {
 /* Math subject uses standard hover and active states */
 
 /* Chinese Subject Styling - Keep icon only */
-.subject-btn.chinese-subject {
-    /* Uses standard subject button styling */
-}
 
 .subject-btn.chinese-subject::before {
     content: "文";
@@ -769,6 +759,10 @@ body {
 }
 
 @media (min-width: 769px) and (max-width: 1024px) {
+    .grade-grid {
+        grid-template-columns: 1fr; /* 1 per row on tablets */
+    }
+    
     .publisher-options {
         grid-template-columns: repeat(2, 1fr); /* 2 per row on medium screens */
     }
@@ -783,8 +777,8 @@ body {
         min-width: 80px;
         padding: 0.6rem 0.8rem;
     }
-    
-    .nav-btn span {
+
+.nav-btn span {
         font-size: 0.9rem;
     }
     

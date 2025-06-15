@@ -2,93 +2,45 @@
 let textbookDataInstance;
 let isChinaUser = null; // Cache the China detection result
 
-// Configuration-driven level management
+// Level configuration and management
 function getLevelConfig(level) {
-    // Try to get configuration from displayConfig first  
-    if (typeof window.displayConfig !== 'undefined') {
-        const configLevel = window.displayConfig.getLevelConfig(level);
-        if (configLevel) {
-            return configLevel; // Return the full config including displayRules
-        }
-    }
-    
-    // Fallback to hardcoded configuration for backward compatibility
     const configs = {
-        '小学': { icon: 'fas fa-child', english: 'Elementary School' },
-        '小学（五•四学制）': { icon: 'fas fa-child', english: 'Elementary (5-4 System)' },
-        '初中': { icon: 'fas fa-user-graduate', english: 'Middle School' },
-        '初中（五•四学制）': { icon: 'fas fa-user-graduate', english: 'Middle School (5-4 System)' },
-        '高中': { icon: 'fas fa-graduation-cap', english: 'High School' },
-        '大学': { icon: 'fas fa-university', english: 'University' },
+        '小学': { icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12C14.21 12 16 10.21 16 8C16 5.79 14.21 4 12 4C9.79 4 8 5.79 8 8C8 10.21 9.79 12 12 12M12 14C9.33 14 4 15.34 4 18V20H20V18C20 15.34 14.67 14 12 14Z"/></svg>', english: 'Elementary School' },
+        '小学（五•四学制）': { icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12C14.21 12 16 10.21 16 8C16 5.79 14.21 4 12 4C9.79 4 8 5.79 8 8C8 10.21 9.79 12 12 12M12 14C9.33 14 4 15.34 4 18V20H20V18C20 15.34 14.67 14 12 14Z"/></svg>', english: 'Elementary (5-4 System)' },
+        '初中': { icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3L1 9L12 15L21 11V17H23V9M5 13.18V17.18L12 21L19 17.18V13.18L12 17L5 13.18Z"/></svg>', english: 'Middle School' },
+        '初中（五•四学制）': { icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3L1 9L12 15L21 11V17H23V9M5 13.18V17.18L12 21L19 17.18V13.18L12 17L5 13.18Z"/></svg>', english: 'Middle School (5-4 System)' },
+        '高中': { icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3L1 9L12 15L21 11V17H23V9M5 13.18V17.18L12 21L19 17.18V13.18L12 17L5 13.18Z"/></svg>', english: 'High School' },
+        '大学': { icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3L2 7V10H22V7L12 3M4 11V16H6V11H4M18 11V16H20V11H18M8 11V16H10V11H8M14 11V16H16V11H14M2 17H22V19H2V17Z"/></svg>', english: 'University' },
     };
     
     // Return config or create dynamic fallback
     return configs[level] || { 
-        icon: 'fas fa-book', 
+        icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M19 2L14 6.5V17.5L19 13V2M6.5 5C4.55 5 2.45 5.4 1 6.5V21.16C1 21.41 1.25 21.66 1.5 21.66C1.6 21.66 1.65 21.59 1.75 21.59C3.1 20.94 5.05 20.5 6.5 20.5C8.45 20.5 10.55 20.9 12 22C13.45 20.9 15.55 20.5 17.5 20.5C18.95 20.5 20.9 20.94 22.25 21.59C22.35 21.59 22.4 21.66 22.5 21.66C22.75 21.66 23 21.41 23 21.16V6.5C21.55 5.4 19.45 5 17.5 5C15.55 5 13.45 5.4 12 6.5C10.55 5.4 8.45 5 6.5 5Z"/></svg>', 
         english: level.includes('学制') ? level.replace('（', ' (').replace('）', ')') : level 
     };
 }
 
-// Configuration-driven behavior utility functions
+// Level behavior utility functions
 function shouldIgnoreGrades(level) {
-    try {
-        const config = getLevelConfig(level);
-        return config?.displayRules?.behaviorFlags?.ignoreGradeFiltering || false;
-    } catch (e) {
-        console.warn(`Failed to get ignoreGradeFiltering config for level ${level}:`, e);
-        return false;
-    }
+    // University level ignores grade filtering
+    return level === '大学';
 }
 
 function shouldUseWideCards(level) {
-    try {
-        const config = getLevelConfig(level);
-        return config?.displayRules?.behaviorFlags?.useWideCards || false;
-    } catch (e) {
-        console.warn(`Failed to get useWideCards config for level ${level}:`, e);
-        return false;
-    }
+    // University level uses wide cards
+    return level === '大学';
 }
 
 function shouldUseDirectSubjectAccess(level) {
-    try {
-        const config = getLevelConfig(level);
-        return config?.displayRules?.behaviorFlags?.useDirectSubjectAccess || false;
-    } catch (e) {
-        console.warn(`Failed to get useDirectSubjectAccess config for level ${level}:`, e);
-        return false;
-    }
+    // University level goes directly to subjects
+    return level === '大学';
 }
 
 
 
-// Configuration-driven level sorting
+// Education level sorting
 function sortEducationLevels(levels) {
-    // Try to use configuration-driven ordering first
-    if (typeof window.displayConfig !== 'undefined') {
-        const enabledLevels = window.displayConfig.getEnabledLevels();
-        const configuredOrder = enabledLevels.map(level => level.name);
-        
-        return levels.sort((a, b) => {
-            const indexA = configuredOrder.indexOf(a);
-            const indexB = configuredOrder.indexOf(b);
-            
-            // If both levels are in our configured order, sort by that order
-            if (indexA !== -1 && indexB !== -1) {
-                return indexA - indexB;
-            }
-            
-            // If only one is in configured order, prioritize it
-            if (indexA !== -1) return -1;
-            if (indexB !== -1) return 1;
-            
-            // If neither is in configured order, sort alphabetically
-            return a.localeCompare(b, 'zh-CN');
-        });
-    }
-    
-    // Fallback to hardcoded ordering for backward compatibility
-    const LEVEL_ORDER = ['小学', '初中', '高中', '大学', '小学（五•四学制）', '初中（五•四学制）'];
+    const LEVEL_ORDER = ['小学', '小学（五•四学制）', '初中', '初中（五•四学制）', '高中', '大学'];
     
     return levels.sort((a, b) => {
         const indexA = LEVEL_ORDER.indexOf(a);
@@ -190,18 +142,30 @@ function convertChineseNumberToInt(chineseNum) {
 let locationDetector = null;
 
 // Initialize the application
-document.addEventListener('DOMContentLoaded', async function() {
+async function initializeApp() {
     // Use the global textbookData instance from textbook-data.js
     textbookDataInstance = window.textbookData;
     
-    // Initialize location detection
+    // Initialize location detection with timeout
     if (typeof LocationBasedDownloader !== 'undefined') {
         locationDetector = new LocationBasedDownloader();
-        console.log('🚀 Initializing location-based downloader...');
+        
+        // Add a timeout to prevent hanging
+        const locationTimeout = setTimeout(() => {
+            console.warn('⚠️ Location detection timeout, using fallback');
+            const isChina = initializeChinaDetection();
+            updateUIForRegion(isChina);
+            
+            const loadingIndicator = document.getElementById('loading-indicator');
+            if (loadingIndicator) {
+                loadingIndicator.style.display = 'none';
+            }
+        }, 5000); // 5 second timeout
         
         try {
             // Detect user location
             await locationDetector.detectLocationWithAPI();
+            clearTimeout(locationTimeout); // Clear timeout if successful
             
             // Initialize China detection with location data
             const isChina = initializeChinaDetection();
@@ -217,6 +181,7 @@ document.addEventListener('DOMContentLoaded', async function() {
             
             console.log('✅ Location detection complete');
         } catch (error) {
+            clearTimeout(locationTimeout); // Clear timeout on error
             console.warn('⚠️ Location detection failed, using fallback:', error);
             // Initialize China detection with fallback
             const isChina = initializeChinaDetection();
@@ -232,6 +197,11 @@ document.addEventListener('DOMContentLoaded', async function() {
         // Initialize China detection without location detector
         const isChina = initializeChinaDetection();
         updateUIForRegion(isChina);
+        
+        const loadingIndicator = document.getElementById('loading-indicator');
+        if (loadingIndicator) {
+            loadingIndicator.style.display = 'none';
+        }
     }
     
     // Remove debug console logs for production
@@ -253,7 +223,16 @@ document.addEventListener('DOMContentLoaded', async function() {
     if (firstLevel) {
         showLevel(firstLevel);
     }
-});
+}
+
+// Call the initialization function
+// Check if DOM is already loaded, if so run immediately, otherwise wait for DOMContentLoaded
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeApp);
+} else {
+    // DOM is already loaded, run immediately
+    initializeApp();
+}
 
 // Update UI based on detected region
 function updateUIForRegion(isChina) {
@@ -262,14 +241,11 @@ function updateUIForRegion(isChina) {
     if (regionIndicator) {
         if (isChina) {
             regionIndicator.innerHTML = `
-                <i class="fas fa-map-marker-alt" style="color: #ff6b6b;"></i> 
                 <span class="region-text">中国用户 - <a href="location-detection.html" target="_blank" style="color: inherit; text-decoration: underline;">测试下载</a></span>
             `;
             regionIndicator.className = 'region-china';
         } else {
-            regionIndicator.innerHTML = `
-                <i class="fas fa-globe" style="color: #4ecdc4;"></i> 
-                <span class="region-text">国际用户 - <a href="location-detection.html" target="_blank" style="color: inherit; text-decoration: underline;">测试下载</a></span>
+            regionIndicator.innerHTML = `<span class="region-text">国际用户 - <a href="location-detection.html" target="_blank" style="color: inherit; text-decoration: underline;">测试下载</a></span>
             `;
             regionIndicator.className = 'region-international';
         }
@@ -295,8 +271,8 @@ function generateNavigation() {
         button.className = `nav-btn ${index === 0 ? 'active' : ''}`;
         button.setAttribute('data-level', level);
         // Create elements safely to prevent XSS
-        const icon = document.createElement('i');
-        icon.className = config.icon;
+        const icon = document.createElement('span');
+        icon.innerHTML = config.icon;
         
         const span = document.createElement('span');
         span.textContent = level;
@@ -344,8 +320,8 @@ function generateLevelSections() {
         
         const header = document.createElement('h2');
         // Create header safely to prevent XSS
-        const headerIcon = document.createElement('i');
-        headerIcon.className = levelConfig.icon;
+        const headerIcon = document.createElement('span');
+        headerIcon.innerHTML = levelConfig.icon;
         header.appendChild(headerIcon);
         header.appendChild(document.createTextNode(` ${level}教材 ${levelConfig.english}`));
         levelSection.appendChild(header);
@@ -429,20 +405,14 @@ function createGradeCard(level, grade, displayName, isWide = false) {
     return gradeCard;
 }
 
-// Get display name for grade using configuration
+// Get display name for grade
 function getGradeDisplayName(grade) {
-    // Try to use configuration first
-    if (typeof window.displayConfig !== 'undefined') {
-        return window.displayConfig.getGradeDisplayName(grade);
-    }
-    
-    // Fallback to minimal hardcoded map for backward compatibility
-    const fallbackMap = {
+    const gradeDisplayMap = {
         'university': '大学课程 University Courses',
         'unknown': '其他教材 Other Materials'
     };
     
-    return fallbackMap[grade] || grade;
+    return gradeDisplayMap[grade] || grade;
 }
 
 // Show level
@@ -519,20 +489,8 @@ function populateSubjects(gradeCard, level, grade) {
         }
         subjectBtn.className = className;
         
-        // Add appropriate icons only for math and Chinese
-        if (isMath || isChinese) {
-            const icon = document.createElement('i');
-            if (isMath) {
-                icon.className = 'fas fa-calculator';
-            } else if (isChinese) {
-                icon.className = 'fas fa-language';
-            }
-            subjectBtn.appendChild(icon);
-            subjectBtn.appendChild(document.createTextNode(` ${subject}`));
-        } else {
-            // No icon for other subjects
-            subjectBtn.appendChild(document.createTextNode(subject));
-        }
+        // No icons for subjects - just text
+        subjectBtn.appendChild(document.createTextNode(subject));
         
         subjectBtn.addEventListener('click', function() {
             selectSubject(this, gradeCard, level, grade, subject);
@@ -778,7 +736,7 @@ const UIComponents = {
         button.className = className;
         
         const icon = document.createElement('i');
-        icon.className = 'fas fa-download';
+        icon.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M5 20H19V18H5M19 9H15V3H9V9H5L12 16L19 9Z"/></svg>';
         button.appendChild(icon);
         button.appendChild(document.createTextNode(` ${book.title}`));
         
@@ -804,7 +762,7 @@ const UIComponents = {
         warning.className = 'split-warning';
         
         const icon = document.createElement('i');
-        icon.className = 'fas fa-exclamation-triangle';
+        icon.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M13 14H11V10H13M13 18H11V16H13M1 21H23L12 2L1 21Z"/></svg>';
         warning.appendChild(icon);
         
         // Get base filename for warning
@@ -817,7 +775,7 @@ const UIComponents = {
         helpButton.onclick = openHelpModal;
         
         const helpIcon = document.createElement('i');
-        helpIcon.className = 'fas fa-question-circle';
+        helpIcon.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12S6.48 22 12 22 22 17.52 22 12 17.52 2 12 2M12 17C11.45 17 11 16.55 11 16S11.45 15 12 15 13 15.45 13 16 12.55 17 12 17M13 13H11V6H13V13Z"/></svg>';
         helpButton.appendChild(helpIcon);
         helpButton.appendChild(document.createTextNode(' 分割文件说明'));
         

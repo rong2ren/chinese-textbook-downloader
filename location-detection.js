@@ -15,8 +15,15 @@ class LocationBasedDownloader {
      */
     async detectLocationWithAPI() {
         try {
-            // Using ipapi.co (free tier: 1000 requests/day)
-            const response = await fetch('https://ipapi.co/json/');
+            // Using ipapi.co (free tier: 1000 requests/day) with timeout
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 3000); // 3 second timeout
+            
+            const response = await fetch('https://ipapi.co/json/', {
+                signal: controller.signal
+            });
+            clearTimeout(timeoutId);
+            
             const data = await response.json();
             
             this.userLocation = {

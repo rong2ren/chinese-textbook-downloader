@@ -32,6 +32,12 @@
 - **中国用户优化** | China-optimized with jsDelivr CDN + proxy fallback
 - **国际用户支持** | International users with direct GitHub access
 
+### ⚡ CDN 优化 | CDN Optimization
+- **4MB 数据文件** | 4MB data file served via jsDelivr CDN
+- **中国用户加速** | Faster loading for China users (50-80% improvement)
+- **自动备用** | Automatic fallback to local files if CDN fails
+- **全球加速** | Global performance boost via worldwide CDN
+
 ### 📚 完整教材库 | Complete Textbook Database
 **数据来源 | Data Source**: [TapXWorld/ChinaTextbook](https://github.com/TapXWorld/ChinaTextbook) - 完整的中国教材收藏 | Complete Chinese textbook collection
 
@@ -72,6 +78,21 @@ window.FALLBACK_PROXY_CONFIG = {
     currentProxy: 'https://your-proxy-service.com/',
 };
 ```
+
+### CDN 缓存刷新 | CDN Cache Refresh
+更新 `textbook-data.js` 后刷新 jsDelivr 缓存 | Refresh jsDelivr cache after updating `textbook-data.js`:
+
+**方法1 | Method 1**: 浏览器访问 | Visit in browser:
+```
+https://purge.jsdelivr.net/gh/rong2ren/chinese-textbook-downloader@main/textbook-data.js
+```
+
+**方法2 | Method 2**: 命令行 | Command line:
+```bash
+curl "https://purge.jsdelivr.net/gh/rong2ren/chinese-textbook-downloader@main/textbook-data.js"
+```
+
+> 💡 **提示 | Tip**: 通常24小时内缓存会自动更新 | Cache usually updates automatically within 24 hours
 
 ## 📊 统计数据 | Statistics
 

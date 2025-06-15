@@ -7,7 +7,7 @@
     <meta name="description" content="免费下载中国小学、初中、高中、大学全套PDF教材，支持智能CDN加速，为中国用户优化">
     <meta name="keywords" content="中国教材,PDF下载,小学教材,初中教材,高中教材,大学教材,免费教材">
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
     <link href="styles.css" rel="stylesheet">
 </head>
 <body>
@@ -17,20 +17,19 @@
             <div class="header-content">
                 <div class="header-top">
                     <div class="header-main">
-                        <h1><i class="fas fa-book"></i> 中国教材下载中心</h1>
+                        <h1>📚 中国教材下载中心</h1>
                         <p class="subtitle">Chinese Textbook Download Center</p>
                     </div>
                     <div class="header-region">
                         <span id="region-indicator">
-                            <i class="fas fa-globe-asia"></i> 
-                            <span class="region-text">检测用户位置中...</span>
+                            <span class="region-text">🌏 检测用户位置中...</span>
                         </span>
                         <div id="loading-indicator" class="location-loading"></div>
                     </div>
                 </div>
                 <p class="description">
-                    📚 小学、初中、高中、大学全套PDF教材 <br>
-                    🌏 Complete PDF textbooks for all education levels
+                    小学、初中、高中、大学全套PDF教材 <br>
+                    Complete PDF textbooks for all education levels
                 </p>
             </div>
         </header>
@@ -51,7 +50,7 @@
         <dialog id="helpModal" aria-labelledby="modal-title">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h2 id="modal-title"><i class="fas fa-info-circle"></i> 分割文件说明</h2>
+                    <h2 id="modal-title">分割文件说明</h2>
                     <form method="dialog">
                         <button type="submit" class="close" aria-label="关闭对话框">&times;</button>
                     </form>
@@ -80,7 +79,7 @@
                     <h3>下载方式</h3>
                     <p>您可以通过以下链接，下载文件合并程序：</p>
                     <a href="https://github.com/TapXWorld/ChinaTextbook-tools/releases" target="_blank" class="download-link">
-                        <i class="fas fa-download"></i> 下载文件合并程序
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: middle; margin-right: 4px;"><path d="M5 20H19V18H5M19 9H15V3H9V9H5L12 16L19 9Z"/></svg> 下载文件合并程序
                     </a>
                 </div>
             </div>
@@ -90,10 +89,10 @@
         <footer class="footer">
             <div class="footer-content">
                 <p>
-                    <i class="fas fa-heart" style="color: #ff6b6b;"></i> 
+    ❤️ 
                     基于开源项目 <a href="https://github.com/TapXWorld/ChinaTextbook" target="_blank">TapXWorld/ChinaTextbook</a> 构建 |
-                    <i class="fas fa-book-open"></i> 仅供学习研究使用，请支持正版 | 
-                    <i class="fas fa-copyright"></i> 所有教材版权归原出版社和作者所有 | 
+                    📚 仅供学习研究使用，请支持正版 | 
+                    © 所有教材版权归原出版社和作者所有 | 
                     &copy; 2025 中国教材下载站
                 </p>
             </div>
@@ -101,10 +100,58 @@
     </div>
 
     <!-- Scripts -->
-    <script src="textbook-data.js"></script>
-    <script src="display-config.js"></script>
-    <script src="fallback-proxy-config.js"></script>
-    <script src="location-detection.js"></script>
-    <script src="script.js"></script>
+    <script>
+        // Load textbook-data.js from jsDelivr with fallback
+        (function() {
+            const jsDelivrUrl = 'https://cdn.jsdelivr.net/gh/rong2ren/chinese-textbook-downloader@main/textbook-data.js';
+            const fallbackUrl = 'textbook-data.js';
+            
+            console.log('🔄 Loading textbook data from jsDelivr...');
+            
+            const script = document.createElement('script');
+            script.src = jsDelivrUrl;
+            
+            script.onload = function() {
+                console.log('✅ Textbook data loaded successfully from jsDelivr');
+                loadRemainingScripts();
+            };
+            
+            script.onerror = function() {
+                console.warn('⚠️ jsDelivr failed, falling back to local file');
+                const fallbackScript = document.createElement('script');
+                fallbackScript.src = fallbackUrl;
+                fallbackScript.onload = function() {
+                    console.log('✅ Textbook data loaded from local fallback');
+                    loadRemainingScripts();
+                };
+                fallbackScript.onerror = function() {
+                    console.error('❌ Both jsDelivr and local textbook data failed to load');
+                };
+                document.head.appendChild(fallbackScript);
+            };
+            
+            document.head.appendChild(script);
+            
+            function loadRemainingScripts() {
+                // Load other scripts after textbook data is ready
+                const scripts = [
+                    'fallback-proxy-config.js', 
+                    'location-detection.js',
+                    'script.js'
+                ];
+                
+                scripts.forEach((src, index) => {
+                    setTimeout(() => {
+                        const s = document.createElement('script');
+                        s.src = src;
+                        s.onerror = function() {
+                            console.error(`❌ Failed to load script: ${src}`);
+                        };
+                        document.head.appendChild(s);
+                    }, index * 50); // Small delay between scripts
+                });
+            }
+        })();
+    </script>
 </body>
 </html> 

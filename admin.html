@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Textbook Data Admin Panel</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
     <style>
         * {
             margin: 0;
@@ -290,13 +290,13 @@
 <body>
     <div class="admin-container">
         <div class="admin-header">
-            <h1><i class="fas fa-cogs"></i> Textbook Data Admin Panel</h1>
+                            <h1>Textbook Data Admin Panel</h1>
             <p>Path-to-Metadata Mapping Analysis & Debugging Tool</p>
         </div>
 
         <div class="stats-grid" id="statsGrid">
             <div class="loading">
-                <i class="fas fa-spinner"></i>
+                                        ⏳
                 <div>Loading statistics...</div>
             </div>
         </div>
@@ -304,7 +304,7 @@
         <div class="controls">
             <div class="search-box">
                 <input type="text" id="searchInput" placeholder="Search by path, level, subject, grade, or publisher...">
-                <i class="fas fa-search"></i>
+                                        🔍
             </div>
             <select class="filter-select" id="levelFilter">
                 <option value="">All Levels</option>
@@ -318,13 +318,13 @@
                 <option value="problems">Problem Files</option>
             </select>
             <button class="refresh-btn" onclick="refreshData()">
-                <i class="fas fa-sync-alt"></i> Refresh
+                                    🔄 Refresh
             </button>
             <button class="export-btn" onclick="exportData()">
-                <i class="fas fa-download"></i> Export CSV
+                                    📥 Export CSV
             </button>
             <a href="location-detection.html?isAdmin=true" class="refresh-btn" style="text-decoration: none; display: inline-block;">
-                <i class="fas fa-vial"></i> 测试下载页面
+                                    🧪 测试下载页面
             </a>
         </div>
 
@@ -346,7 +346,7 @@
                 <tbody id="dataTableBody">
                     <tr>
                         <td colspan="9" class="loading">
-                            <i class="fas fa-spinner"></i>
+                            Loading...
                             <div>Loading textbook data...</div>
                         </td>
                     </tr>
@@ -359,7 +359,25 @@
         </div>
     </div>
 
-    <script src="textbook-data.js"></script>
+    <script>
+        // Load textbook-data.js from jsDelivr with fallback
+        (function() {
+            const jsDelivrUrl = 'https://cdn.jsdelivr.net/gh/rong2ren/chinese-textbook-downloader@main/textbook-data.js';
+            const fallbackUrl = 'textbook-data.js';
+            
+            const script = document.createElement('script');
+            script.src = jsDelivrUrl;
+            
+            script.onerror = function() {
+                console.warn('jsDelivr failed, using local textbook-data.js');
+                const fallbackScript = document.createElement('script');
+                fallbackScript.src = fallbackUrl;
+                document.head.appendChild(fallbackScript);
+            };
+            
+            document.head.appendChild(script);
+        })();
+    </script>
     <script>
         let allData = [];
         let filteredData = [];
@@ -392,7 +410,7 @@
                 if (allData.length === 0) {
                     document.getElementById('dataTableBody').innerHTML = `
                         <tr><td colspan="9" style="text-align: center; color: orange;">
-                            <i class="fas fa-exclamation-triangle"></i> 
+                            ⚠️ 
                             <div>No data loaded. This might be a CORS issue.</div>
                             <div style="font-size: 0.8em; margin-top: 10px;">
                                 <strong>Try:</strong><br>
@@ -406,7 +424,7 @@
                     // Also update stats to show the issue
                     document.getElementById('statsGrid').innerHTML = `
                         <div style="grid-column: 1 / -1; text-align: center; color: orange;">
-                            <h3><i class="fas fa-exclamation-triangle"></i> No Data Loaded</h3>
+                            <h3>⚠️ No Data Loaded</h3>
                             <p>The textbook-data.js file couldn't be loaded. This is likely a CORS issue.</p>
                             <p>Please serve this page through HTTP (not file://) for proper functionality.</p>
                         </div>
@@ -421,7 +439,7 @@
                 console.error('Error loading data:', error);
                 document.getElementById('dataTableBody').innerHTML = `
                     <tr><td colspan="9" style="text-align: center; color: red;">
-                        <i class="fas fa-exclamation-triangle"></i> Error loading data: ${error.message}
+                        ⚠️ Error loading data: ${error.message}
                         <div style="font-size: 0.8em; margin-top: 10px;">
                             Check browser console (F12) for more details.
                         </div>
@@ -557,7 +575,7 @@
             if (data.length === 0) {
                 tbody.innerHTML = `
                     <tr><td colspan="9" style="text-align: center; color: #6c757d;">
-                        <i class="fas fa-search"></i> No files match the current filters
+                        🔍 No files match the current filters
                     </td></tr>
                 `;
                 return;
