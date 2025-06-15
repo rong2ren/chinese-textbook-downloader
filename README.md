@@ -4,8 +4,8 @@
 [![GitHub forks](https://img.shields.io/github/forks/rong2ren/chinese-textbook-downloader?style=social)](https://github.com/rong2ren/chinese-textbook-downloader/network)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-> 🎓 中国教材下载系统，支持全球访问优化  
-> Chinese textbook download system with global access optimization
+> 🎓 中国教材下载网站 
+> Chinese textbook download website
 
 
 ## 📸 截图 | Screenshots
