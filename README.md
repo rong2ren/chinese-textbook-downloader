@@ -4,8 +4,9 @@
 [![GitHub forks](https://img.shields.io/github/forks/rong2ren/textbook?style=social)](https://github.com/rong2ren/textbook/network)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-> 🎓 智能CDN路由的中国教材下载系统，支持全球访问优化  
+> 🎓 中国教材下载系统，支持全球访问优化  
 > Intelligent CDN-routed Chinese textbook download system with global access optimization
+
 
 ## 📸 截图 | Screenshots
 
@@ -26,6 +27,8 @@
 - **国际用户支持** | International users with direct GitHub access
 
 ### 📚 完整教材库 | Complete Textbook Database
+**数据来源 | Data Source**: [TapXWorld/ChinaTextbook](https://github.com/TapXWorld/ChinaTextbook) - 完整的中国教材收藏 | Complete Chinese textbook collection
+
 - **2,371+ 本教材** | 2,371+ textbooks
 - **6个教育阶段** | 6 education levels: 小学, 初中, 高中, 大学, etc.
 - **27个学科** | 27 subjects: 数学, 语文, 英语, 科学, etc.
@@ -81,7 +84,6 @@ window.FALLBACK_PROXY_CONFIG = {
 - **jsDelivr**: 中国用户CDN服务 | CDN service for China users
 - **GitHub**: 可靠的文件托管 | Reliable file hosting
 
-### ⚠️ 免责声明 | Disclaimer
 
 本项目仅用于教育和研究目的。所有教材版权归各自出版社和作者所有。请支持正版出版物。
 
