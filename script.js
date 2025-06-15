@@ -138,71 +138,22 @@ function convertChineseNumberToInt(chineseNum) {
     return 0; // fallback
 }
 
-// Global location detector instance
-let locationDetector = null;
-
 // Initialize the application
 async function initializeApp() {
     // Use the global textbookData instance from textbook-data.js
     textbookDataInstance = window.textbookData;
     
-    // Initialize location detection with timeout
-    if (typeof LocationBasedDownloader !== 'undefined') {
-        locationDetector = new LocationBasedDownloader();
-        
-        // Add a timeout to prevent hanging
-        const locationTimeout = setTimeout(() => {
-            console.warn('⚠️ Location detection timeout, using fallback');
-            const isChina = initializeChinaDetection();
-            updateUIForRegion(isChina);
-            
-            const loadingIndicator = document.getElementById('loading-indicator');
-            if (loadingIndicator) {
-                loadingIndicator.style.display = 'none';
-            }
-        }, 5000); // 5 second timeout
-        
-        try {
-            // Detect user location
-            await locationDetector.detectLocationWithAPI();
-            clearTimeout(locationTimeout); // Clear timeout if successful
-            
-            // Initialize China detection with location data
-            const isChina = initializeChinaDetection();
-            
-            // Update UI based on location
-            updateUIForRegion(isChina);
-            
-            // Hide loading indicator
-            const loadingIndicator = document.getElementById('loading-indicator');
-            if (loadingIndicator) {
-                loadingIndicator.style.display = 'none';
-            }
-            
-            console.log('✅ Location detection complete');
-        } catch (error) {
-            clearTimeout(locationTimeout); // Clear timeout on error
-            console.warn('⚠️ Location detection failed, using fallback:', error);
-            // Initialize China detection with fallback
-            const isChina = initializeChinaDetection();
-            updateUIForRegion(isChina);
-            
-            const loadingIndicator = document.getElementById('loading-indicator');
-            if (loadingIndicator) {
-                loadingIndicator.style.display = 'none';
-            }
-        }
-    } else {
-        console.warn('⚠️ LocationBasedDownloader not found, using legacy detection');
-        // Initialize China detection without location detector
-        const isChina = initializeChinaDetection();
-        updateUIForRegion(isChina);
-        
-        const loadingIndicator = document.getElementById('loading-indicator');
-        if (loadingIndicator) {
-            loadingIndicator.style.display = 'none';
-        }
+    // Initialize China detection using browser-based detection
+    const isChina = initializeChinaDetection();
+    updateUIForRegion(isChina);
+    
+    // Hide loading indicator
+    const loadingIndicator = document.getElementById('loading-indicator');
+    if (loadingIndicator) {
+        loadingIndicator.style.display = 'none';
     }
+    
+    console.log('✅ Location detection complete using browser fallback');
     
     // Remove debug console logs for production
     // console.log('Textbook data loaded with stats:', textbookDataInstance.getStats());
@@ -955,11 +906,7 @@ function initializeChinaDetection() {
         return isChinaUser;
     }
     
-    // Use advanced location detection if available
-    if (locationDetector && locationDetector.isChina !== undefined) {
-        isChinaUser = locationDetector.isChina;
-        return isChinaUser;
-    }
+
     
     // Fallback to browser-based detection
     const language = navigator.language || navigator.userLanguage;

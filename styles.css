@@ -119,18 +119,7 @@ body {
     font-weight: 300;
 }
 
-.feature-highlight {
-    display: block;
-    margin-top: 0.8rem;
-    font-size: 1rem;
-    font-weight: 500;
-    opacity: 0.9;
-}
 
-.feature-highlight i {
-    margin: 0 0.3rem;
-    color: rgba(255, 255, 255, 0.9);
-}
 
 .region-text {
     margin-left: 0.3rem;
@@ -443,7 +432,6 @@ body {
     padding: 1rem;
     background: #f8f9fa;
     border-radius: 8px;
-    animation: slideDown 0.3s ease-out;
 }
 
 .publisher-title {
@@ -514,7 +502,6 @@ body {
     margin-top: 1rem;
     padding-top: 1rem;
     border-top: 1px solid #e0e0e0;
-    animation: slideDown 0.3s ease-out;
 }
 
 .download-buttons {
@@ -811,10 +798,7 @@ body {
         font-size: 0.85rem;
     }
     
-    .split-help-btn {
-        font-size: 0.8rem;
-        padding: 6px 12px;
-    }
+
 }
 
 /* Modal Styles */

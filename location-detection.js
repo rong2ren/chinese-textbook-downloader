@@ -237,41 +237,7 @@ class LocationBasedDownloader {
 // Note: Initialization is handled by the main script.js file
 // This class is just the location detection functionality
 
-/**
- * Enhanced download function for textbook buttons
- */
-async function downloadTextbook(filePath, filename) {
-    // Show loading state
-    const button = event.target;
-    const originalText = button.textContent;
-    button.textContent = '下载中... / Downloading...';
-    button.disabled = true;
-    
-    try {
-        const success = await downloader.downloadFile(filePath, filename);
-        
-        if (success) {
-            button.textContent = '✅ 下载成功 / Downloaded';
-            setTimeout(() => {
-                button.textContent = originalText;
-                button.disabled = false;
-            }, 2000);
-        } else {
-            button.textContent = '❌ 下载失败 / Failed';
-            setTimeout(() => {
-                button.textContent = originalText;
-                button.disabled = false;
-            }, 3000);
-        }
-    } catch (error) {
-        console.error('Download error:', error);
-        button.textContent = '❌ 下载失败 / Failed';
-        setTimeout(() => {
-            button.textContent = originalText;
-            button.disabled = false;
-        }, 3000);
-    }
-}
+
 
 // Export for use in other scripts
 if (typeof module !== 'undefined' && module.exports) {
