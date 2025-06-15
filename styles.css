@@ -6,9 +6,9 @@
 }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans SC', 'Helvetica Neue', Arial, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', '微软雅黑', 'Helvetica Neue', Arial, sans-serif;
     line-height: 1.6;
-    color: #333;
+    color: #2c3e50;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     min-height: 100vh;
     overflow-x: hidden;
@@ -17,12 +17,13 @@ body {
 .container {
     max-width: 1400px;
     margin: 0 auto;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(15px);
     border-radius: 20px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
     margin-top: 20px;
     margin-bottom: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 /* Header Styles */
@@ -30,11 +31,12 @@ body {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
     text-align: center;
-    padding: 3rem 2rem;
-    margin-bottom: 2rem;
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    padding: 3.5rem 2rem;
+    margin-bottom: 0;
+    border-radius: 20px 20px 0 0;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
     position: relative;
+    overflow: hidden;
 }
 
 .header::before {
@@ -44,9 +46,11 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="20" cy="20" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="80" cy="40" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="40" cy="80" r="1" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100%" height="100%" fill="url(%23grain)"/></svg>');
-    opacity: 0.1;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="20" cy="20" r="1.5" fill="rgba(255,255,255,0.1)"/><circle cx="80" cy="40" r="1" fill="rgba(255,255,255,0.08)"/><circle cx="40" cy="80" r="1.2" fill="rgba(255,255,255,0.09)"/><circle cx="60" cy="15" r="0.8" fill="rgba(255,255,255,0.07)"/><circle cx="15" cy="70" r="1.3" fill="rgba(255,255,255,0.08)"/></pattern></defs><rect width="100%" height="100%" fill="url(%23grain)"/></svg>');
+    opacity: 0.15;
 }
+
+
 
 .header-content {
     position: relative;
@@ -72,52 +76,87 @@ body {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    background: rgba(255, 255, 255, 0.15);
-    padding: 0.5rem 1rem;
-    border-radius: 20px;
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.2);
+    padding: 0.6rem 1.2rem;
+    border-radius: 25px;
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
     color: white;
     font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.header-region:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: translateY(-1px);
 }
 
 .header-content h1 {
-    font-size: 2.5rem;
+    font-size: 2.8rem;
     margin-bottom: 0.5rem;
     font-weight: 700;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    letter-spacing: 1px;
+}
+
+.header-content h1 i {
+    margin-right: 0.5rem;
+    color: rgba(255, 255, 255, 0.9);
 }
 
 .header-content .subtitle {
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     margin-bottom: 0;
     opacity: 0.9;
+    font-weight: 400;
+    letter-spacing: 0.5px;
 }
 
 .header-content .description {
-    font-size: 1rem;
-    opacity: 0.8;
-    line-height: 1.6;
+    font-size: 1.1rem;
+    opacity: 0.85;
+    line-height: 1.8;
     margin-bottom: 1.5rem;
+    font-weight: 300;
+}
+
+.feature-highlight {
+    display: block;
+    margin-top: 0.8rem;
+    font-size: 1rem;
+    font-weight: 500;
+    opacity: 0.9;
+}
+
+.feature-highlight i {
+    margin: 0 0.3rem;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.region-text {
+    margin-left: 0.3rem;
 }
 
 .help-btn {
     background: rgba(255, 255, 255, 0.2);
     color: white;
     border: 2px solid rgba(255, 255, 255, 0.3);
-    padding: 0.8rem 1.5rem;
-    border-radius: 25px;
+    padding: 0.9rem 1.8rem;
+    border-radius: 30px;
     cursor: pointer;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     font-weight: 600;
     transition: all 0.3s ease;
     backdrop-filter: blur(10px);
+    letter-spacing: 0.5px;
 }
 
 .help-btn:hover {
     background: rgba(255, 255, 255, 0.3);
     border-color: rgba(255, 255, 255, 0.5);
     transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }
 
 /* Region Indicator Styles */
@@ -136,10 +175,10 @@ body {
 
 .location-loading {
     display: inline-block;
-    width: 20px;
-    height: 20px;
-    border: 3px solid #f3f3f3;
-    border-top: 3px solid #3498db;
+    width: 18px;
+    height: 18px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top: 2px solid rgba(255, 255, 255, 0.8);
     border-radius: 50%;
     animation: spin 1s linear infinite;
 }
@@ -151,36 +190,53 @@ body {
 
 /* Navigation Styles */
 .navigation {
-    padding: 2rem;
-    background: rgba(255, 255, 255, 0.8);
+    padding: 2.5rem 2rem;
+    background: rgba(255, 255, 255, 0.9);
     backdrop-filter: blur(10px);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
 }
 
 .nav-buttons {
     display: flex;
     justify-content: center;
-    gap: 1rem;
+    gap: 1.2rem;
     flex-wrap: wrap;
 }
 
 .nav-btn {
     background: white;
-    border: 2px solid #e0e0e0;
-    padding: 1rem 1.5rem;
-    border-radius: 15px;
+    border: 2px solid #e8eaf6;
+    padding: 1.2rem 1.8rem;
+    border-radius: 18px;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     display: flex;
     flex-direction: column;
     align-items: center;
-    min-width: 120px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    min-width: 130px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    position: relative;
+    overflow: hidden;
+}
+
+.nav-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    transition: left 0.5s;
+}
+
+.nav-btn:hover::before {
+    left: 100%;
 }
 
 .nav-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
     border-color: #667eea;
 }
 
@@ -188,27 +244,39 @@ body {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
     border-color: #667eea;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
 }
 
 .nav-btn i {
-    font-size: 1.5rem;
-    margin-bottom: 0.5rem;
+    font-size: 1.6rem;
+    margin-bottom: 0.6rem;
+    transition: transform 0.3s ease;
+}
+
+.nav-btn:hover i {
+    transform: scale(1.1);
 }
 
 .nav-btn span {
-    font-size: 1rem;
+    font-size: 1.05rem;
     font-weight: 600;
+    margin-bottom: 0.2rem;
+    letter-spacing: 0.3px;
 }
 
 .nav-btn small {
-    font-size: 0.8rem;
-    opacity: 0.7;
+    font-size: 0.85rem;
+    opacity: 0.75;
+    font-weight: 400;
+    letter-spacing: 0.2px;
 }
 
 /* Main Content Styles */
 .main-content {
-    padding: 2rem;
+    padding: 2.5rem 2rem;
     min-height: 500px;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.9), rgba(248, 250, 252, 0.9));
 }
 
 .level-section {
@@ -218,42 +286,74 @@ body {
 
 .level-section.active {
     display: block;
+    animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .level-section h2 {
-    font-size: 2rem;
-    margin-bottom: 2rem;
-    color: #333;
+    font-size: 2.2rem;
+    margin-bottom: 2.5rem;
+    color: #2c3e50;
     text-align: center;
-    border-bottom: 3px solid #667eea;
-    padding-bottom: 1rem;
+    font-weight: 700;
 }
 
 .level-section h2 i {
-    margin-right: 1rem;
+    margin-right: 0.5rem;
     color: #667eea;
+    font-size: 2rem;
 }
 
 /* Grade Grid Styles */
 .grade-grid {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: 2rem;
     margin-top: 2rem;
 }
 
 .grade-card {
     background: white;
-    border-radius: 15px;
-    padding: 1.5rem;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
     border: 1px solid rgba(0, 0, 0, 0.05);
-    transition: all 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.grade-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #667eea, #764ba2, #667eea);
+    background-size: 200% 100%;
+    animation: gradientMove 3s ease-in-out infinite;
+}
+
+@keyframes gradientMove {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
 }
 
 .grade-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+    transform: translateY(-8px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+    border-color: rgba(102, 126, 234, 0.2);
 }
 
 .grade-card.wide {
@@ -261,11 +361,12 @@ body {
 }
 
 .grade-card h3 {
-    font-size: 1.3rem;
-    margin-bottom: 1rem;
-    color: #333;
-    border-bottom: 2px solid #f0f0f0;
-    padding-bottom: 0.5rem;
+    font-size: 1.4rem;
+    margin-bottom: 1.5rem;
+    color: #2c3e50;
+    font-weight: 700;
+    text-align: center;
+    letter-spacing: 0.5px;
 }
 
 .subjects {
@@ -281,134 +382,158 @@ body {
 .subject-btn {
     background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
     border: 1px solid #dee2e6;
-    padding: 0.6rem 1rem;
-    border-radius: 20px;
+    padding: 0.8rem 1.2rem;
+    border-radius: 25px;
     cursor: pointer;
-    transition: all 0.3s ease;
-    font-size: 0.9rem;
-    font-weight: 500;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-size: 0.95rem;
+    font-weight: 600;
     color: #495057;
+    position: relative;
+    overflow: hidden;
+    letter-spacing: 0.3px;
+}
+
+.subject-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.5s;
+}
+
+.subject-btn:hover::before {
+    left: 100%;
 }
 
 .subject-btn:hover {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(102, 126, 234, 0.3);
+    border-color: #667eea;
 }
 
 .subject-btn:active {
-    transform: translateY(0);
+    transform: translateY(-1px);
 }
 
 .subject-btn.active {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
     border-color: #667eea;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(102, 126, 234, 0.4);
 }
 
-/* Math Subject Styling - Orange theme with mathematical symbols */
+/* Math Subject Styling - Subtle blue theme */
 .subject-btn.math-subject {
-    background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
-    color: white;
-    border-color: #f39c12;
+    background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+    color: #1565c0;
+    border-color: #90caf9;
     font-weight: 600;
     position: relative;
-    overflow: hidden;
 }
 
 .subject-btn.math-subject::before {
-    content: "∑∫π√";
+    content: "∑";
     position: absolute;
-    top: -5px;
-    right: -10px;
-    font-size: 0.7rem;
-    opacity: 0.3;
-    transform: rotate(15deg);
+    top: 2px;
+    right: 8px;
+    font-size: 0.8rem;
+    opacity: 0.4;
+    color: #1976d2;
     pointer-events: none;
 }
 
 .subject-btn.math-subject:hover {
-    background: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
-    transform: translateY(-3px) scale(1.05);
-    box-shadow: 0 8px 25px rgba(243, 156, 18, 0.4);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(102, 126, 234, 0.3);
+    border-color: #667eea;
 }
 
 .subject-btn.math-subject.active {
-    background: linear-gradient(135deg, #d35400 0%, #c0392b 100%);
-    border-color: #d35400;
-    box-shadow: 0 6px 20px rgba(211, 84, 0, 0.5);
-    transform: translateY(-1px) scale(1.02);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-color: #667eea;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(102, 126, 234, 0.4);
 }
 
-/* Chinese Subject Styling - Orange theme with cultural elements */
+/* Chinese Subject Styling - Subtle red theme */
 .subject-btn.chinese-subject {
-    background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
-    color: white;
-    border-color: #f39c12;
+    background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
+    color: #c62828;
+    border-color: #ef9a9a;
     font-weight: 600;
     position: relative;
-    overflow: hidden;
 }
 
 .subject-btn.chinese-subject::before {
-    content: "文字诗词";
+    content: "文";
     position: absolute;
-    top: -5px;
-    right: -10px;
-    font-size: 0.7rem;
-    opacity: 0.3;
-    transform: rotate(15deg);
+    top: 2px;
+    right: 8px;
+    font-size: 0.8rem;
+    opacity: 0.4;
+    color: #d32f2f;
     pointer-events: none;
 }
 
 .subject-btn.chinese-subject:hover {
-    background: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
-    transform: translateY(-3px) scale(1.05);
-    box-shadow: 0 8px 25px rgba(243, 156, 18, 0.4);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(102, 126, 234, 0.3);
+    border-color: #667eea;
 }
 
 .subject-btn.chinese-subject.active {
-    background: linear-gradient(135deg, #d35400 0%, #c0392b 100%);
-    border-color: #d35400;
-    box-shadow: 0 6px 20px rgba(211, 84, 0, 0.5);
-    transform: translateY(-1px) scale(1.02);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-color: #667eea;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(102, 126, 234, 0.4);
 }
 
-/* Practice Subject Styling - Enhanced orange theme */
+/* Practice Subject Styling - Subtle green theme */
 .subject-btn.practice-subject {
-    background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
-    color: white;
-    border-color: #f39c12;
+    background: linear-gradient(135deg, #e8f5e8 0%, #c8e6c9 100%);
+    color: #2e7d32;
+    border-color: #a5d6a7;
     font-weight: 600;
     position: relative;
-    overflow: hidden;
 }
 
 .subject-btn.practice-subject::before {
-    content: "📝✏️";
+    content: "✏️";
     position: absolute;
-    top: -2px;
-    right: -5px;
+    top: 2px;
+    right: 8px;
     font-size: 0.8rem;
     opacity: 0.4;
-    transform: rotate(15deg);
     pointer-events: none;
 }
 
 .subject-btn.practice-subject:hover {
-    background: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
-    transform: translateY(-3px) scale(1.05);
-    box-shadow: 0 8px 25px rgba(243, 156, 18, 0.4);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(102, 126, 234, 0.3);
+    border-color: #667eea;
 }
 
 .subject-btn.practice-subject.active {
-    background: linear-gradient(135deg, #d35400 0%, #c0392b 100%);
-    border-color: #d35400;
-    box-shadow: 0 6px 20px rgba(211, 84, 0, 0.5);
-    transform: translateY(-1px) scale(1.02);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-color: #667eea;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(102, 126, 234, 0.4);
 }
 
 .subject-btn.practice-subject i {
@@ -513,39 +638,56 @@ body {
 }
 
 .title-downloads {
-    display: flex;
-    flex-direction: column;
-    gap: 0.8rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1rem;
     margin-bottom: 1.5rem;
 }
 
 .title-downloads .main-files-row {
-    display: flex;
-    flex-direction: row;
-    gap: 0.8rem;
-    margin-bottom: 0.5rem;
+    display: contents;
 }
 
 .title-downloads .download-btn {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
     border: none;
-    padding: 0.8rem 1rem;
-    border-radius: 8px;
+    padding: 1rem 1.5rem;
+    border-radius: 15px;
     cursor: pointer;
-    font-weight: bold;
-    transition: all 0.3s ease;
+    font-weight: 600;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     display: flex;
     align-items: center;
-    justify-content: flex-start;
-    gap: 0.5rem;
-    width: auto;
-    text-align: left;
+    justify-content: center;
+    gap: 0.8rem;
+    text-align: center;
+    font-size: 0.95rem;
+    letter-spacing: 0.3px;
+    position: relative;
+    overflow: hidden;
+    min-height: 60px;
+}
+
+.title-downloads .download-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.title-downloads .download-btn:hover::before {
+    left: 100%;
 }
 
 .title-downloads .download-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+    background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
 }
 
 .title-downloads .split-container {

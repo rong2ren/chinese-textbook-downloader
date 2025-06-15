@@ -261,10 +261,16 @@ function updateUIForRegion(isChina) {
     
     if (regionIndicator) {
         if (isChina) {
-            regionIndicator.innerHTML = '🇨🇳 <a href="location-detection.html" target="_blank" style="color: inherit; text-decoration: underline;">测试能否下载</a>';
+            regionIndicator.innerHTML = `
+                <i class="fas fa-map-marker-alt" style="color: #ff6b6b;"></i> 
+                <span class="region-text">中国用户 - <a href="location-detection.html" target="_blank" style="color: inherit; text-decoration: underline;">测试下载</a></span>
+            `;
             regionIndicator.className = 'region-china';
         } else {
-            regionIndicator.innerHTML = '🌍 <a href="location-detection.html" target="_blank" style="color: inherit; text-decoration: underline;">测试能否下载</a>';
+            regionIndicator.innerHTML = `
+                <i class="fas fa-globe" style="color: #4ecdc4;"></i> 
+                <span class="region-text">国际用户 - <a href="location-detection.html" target="_blank" style="color: inherit; text-decoration: underline;">测试下载</a></span>
+            `;
             regionIndicator.className = 'region-international';
         }
     }
