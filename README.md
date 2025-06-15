@@ -37,7 +37,7 @@
 ## 🚀 快速开始 | Quick Start
 
 ### 在线访问 | Online Access
-直接访问网站 | Visit directly: [Your Website URL]
+直接访问网站 | Visit directly: https://china-edu-books.vercel.app
 
 ### 本地运行 | Local Development
 ```bash
