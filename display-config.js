@@ -267,8 +267,6 @@ class DisplayConfigManager {
             console.warn('Failed to load configuration from localStorage:', e);
         }
 
-        // Fall back to default configuration
-        console.log('Using default display configuration');
         return JSON.parse(JSON.stringify(DEFAULT_DISPLAY_CONFIG)); // Deep copy
     }
 

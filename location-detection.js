@@ -31,7 +31,6 @@ class LocationBasedDownloader {
             this.detectionComplete = true;
             
             console.log(`🌍 User location detected: ${data.country_name} (${data.country_code})`);
-            console.log(`🇨🇳 Is China region: ${this.isChina}`);
             
             return this.isChina;
         } catch (error) {
@@ -64,7 +63,6 @@ class LocationBasedDownloader {
             this.isChina = chinaTimezones.includes(timezone);
             this.detectionComplete = true;
             
-            console.log(`🇨🇳 Is China region (by timezone): ${this.isChina}`);
             return this.isChina;
         } catch (error) {
             console.warn('⚠️ Timezone detection failed, defaulting to China (safer):', error);

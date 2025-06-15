@@ -1026,24 +1026,19 @@ function getDownloadUrl(book) {
     // Use shouldUseChinaUrls which handles URL parameter override and location detection
     const isChina = shouldUseChinaUrls();
     
-    let finalUrl;
     if (isChina) {
         // For China users: Use pre-computed china_url (jsDelivr or configurable proxy fallback)
         if (book.jsdelivr_works) {
-            finalUrl = book.china_url;
-            console.log(`🇨🇳 China user - jsDelivr URL: ${finalUrl}`);
+            return book.china_url;
         } else {
             const proxy = window.FALLBACK_PROXY_CONFIG ? window.FALLBACK_PROXY_CONFIG.getCurrentProxy() : 'https://ghfast.top/';
-            finalUrl = proxy + book.china_url;
-            console.log(`🇨🇳 China user - Proxy URL: ${finalUrl} (proxy: ${proxy})`);
+            return proxy + book.china_url;
         }
     } else {
         // For international users: Use pre-computed international_url (GitHub direct)
         if (book.international_url) return book.international_url;
         else return book.download_url;
     }
-    
-    return finalUrl;
 }
 
 // Download from URL - uses pre-computed location-aware URLs with fallback support
