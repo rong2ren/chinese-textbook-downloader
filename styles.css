@@ -939,48 +939,46 @@ body:has(dialog[open]) {
 }
 
 .split-file-btn {
-    background: #e9ecef;
-    color: #495057;
-    font-size: 0.8rem;
-    padding: 0.6rem 0.5rem;
-    border: 1px solid #ced4da;
-    transition: none !important;
-    transform: none !important;
-    box-shadow: none !important;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    font-size: 0.85rem;
+    padding: 0.7rem 1rem;
+    border-radius: 12px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    cursor: pointer;
     position: relative;
+    overflow: hidden;
 }
 
 .split-file-btn::before {
-    display: none !important;
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
 }
 
 .split-file-btn:hover {
-    background: #dee2e6;
-    color: #495057;
-    transition: none !important;
-    transform: none !important;
-    box-shadow: none !important;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
 }
 
 .split-file-btn:hover::before {
-    display: none !important;
-    left: -100% !important;
-    transition: none !important;
+    left: 100%;
 }
 
 /* Override any parent hover effects specifically for split buttons */
 .title-downloads .split-file-btn:hover {
-    background: #dee2e6 !important;
-    color: #495057 !important;
-    transform: none !important;
-    box-shadow: none !important;
-    transition: none !important;
+    transform: translateY(-3px) !important;
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4) !important;
 }
 
 .title-downloads .split-file-btn:hover::before {
-    display: none !important;
-    left: -100% !important;
-    transition: none !important;
+    left: 100% !important;
 }
 
 .split-container {
