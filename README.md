@@ -1,7 +1,7 @@
 # 中国教材下载中心 | Chinese Textbook Download Center
 
-[![GitHub stars](https://img.shields.io/github/stars/rong2ren/textbook?style=social)](https://github.com/rong2ren/textbook/stargazers)
-[![GitHub forks](https://img.shields.io/github/forks/rong2ren/textbook?style=social)](https://github.com/rong2ren/textbook/network)
+[![GitHub stars](https://img.shields.io/github/stars/rong2ren/chinese-textbook-downloader?style=social)](https://github.com/rong2ren/chinese-textbook-downloader/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/rong2ren/chinese-textbook-downloader?style=social)](https://github.com/rong2ren/chinese-textbook-downloader/network)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 > 🎓 中国教材下载系统，支持全球访问优化  
@@ -42,8 +42,8 @@
 ### 本地运行 | Local Development
 ```bash
 # 克隆仓库 | Clone repository
-git clone https://github.com/rong2ren/textbook.git
-cd textbook
+git clone https://github.com/rong2ren/chinese-textbook-downloader.git
+cd chinese-textbook-downloader
 
 # 启动本地服务器 | Start local server
 python3 -m http.server 8000
