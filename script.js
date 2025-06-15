@@ -1068,7 +1068,6 @@ function downloadFromUrl(url, filename, book = null) {
     const link = document.createElement('a');
     link.href = actualUrl;
     link.download = filename;
-    link.target = '_blank';
     
     // Add error handling for China users with fallback URLs
     if (book && book._fallbackUrl && isChina) {
@@ -1100,7 +1099,6 @@ function downloadFromUrl(url, filename, book = null) {
             const fallbackLink = document.createElement('a');
             fallbackLink.href = book._fallbackUrl;
             fallbackLink.download = filename;
-            fallbackLink.target = '_blank';
             
             document.body.appendChild(fallbackLink);
             fallbackLink.click();
