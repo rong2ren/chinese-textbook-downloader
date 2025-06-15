@@ -205,9 +205,228 @@ This project is for educational purposes. All textbook content belongs to their 
 
 - **Data Source**: [TapXWorld/ChinaTextbook](https://github.com/TapXWorld/ChinaTextbook) - Comprehensive Chinese textbook collection
 - **CDN Services**: jsDelivr for global content delivery
-- **Proxy Services**: ghfast.top for China accessibility
 - **Icons**: Font Awesome for consistent iconography
 
 ---
 
-**Built with ❤️ for Chinese education accessibility worldwide** 
+**Built with ❤️ for Chinese education accessibility worldwide**
+
+## 📸 Screenshots
+
+### Header & Navigation
+![Header Interface](screenshots/header.png)
+*Modern header with location detection, feature highlights, and intuitive navigation*
+
+### Elementary School Interface
+![Elementary School](screenshots/elementary.png)
+*Clean subject selection for elementary education with visual subject indicators*
+
+### University Level Interface
+![University Interface](screenshots/university.png)
+*Comprehensive university-level textbook browsing with advanced subject categorization*
+
+---
+
+## ✨ Features
+
+### 🌍 **Location-Aware Download System**
+- **Intelligent CDN Routing**: Automatically detects user location and serves optimal download URLs
+- **China-Optimized**: Uses jsDelivr CDN for Chinese users with proxy fallback
+- **International Support**: Direct GitHub access for international users
+- **Real-time Testing**: Built-in connectivity testing and URL validation
+
+### 📚 **Comprehensive Textbook Database**
+- **2,371+ Textbooks**: Complete collection across all education levels
+- **6 Education Levels**: 小学, 初中, 高中, 大学, and specialized systems
+- **27 Subjects**: Mathematics, Chinese, English, Science, and more
+- **125+ Publishers**: All major Chinese educational publishers
+
+### 🎨 **Modern User Interface**
+- **Glassmorphism Design**: Beautiful, modern UI with backdrop blur effects
+- **Responsive Layout**: Optimized for desktop, tablet, and mobile devices
+- **Intuitive Navigation**: Easy-to-use subject and grade selection
+- **Visual Feedback**: Smooth animations and hover effects
+
+### ⚡ **Performance & Reliability**
+- **63.3% jsDelivr Success Rate**: High-speed CDN delivery for most files
+- **100% Fallback Coverage**: Proxy routing ensures all files are accessible
+- **Configurable Proxy System**: Easy switching between proxy services
+- **Concurrent Testing**: 15-worker system for real-time URL validation
+
+### 🛠️ **Advanced Admin Tools**
+- **Data Management**: Comprehensive textbook database administration
+- **Display Configuration**: Flexible UI customization options
+- **URL Testing**: Real-time connectivity and performance testing
+- **Statistics Dashboard**: Detailed analytics and usage metrics
+
+## 🚀 Quick Start
+
+### Prerequisites
+- Modern web browser with JavaScript enabled
+- Internet connection for CDN and proxy services
+
+### Installation
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/rong2ren/textbook.git
+   cd textbook
+   ```
+
+2. **Start local server**
+   ```bash
+   # Using Python
+   python3 -m http.server 8000
+   
+   # Using Node.js
+   npx serve .
+   
+   # Using PHP
+   php -S localhost:8000
+   ```
+
+3. **Access the application**
+   ```
+   http://localhost:8000
+   ```
+
+### Testing China Mode
+To test the China-specific download behavior:
+```
+http://localhost:8000/index.html?isChina=true
+```
+
+## 🏗️ Architecture
+
+### Core Components
+```
+├── index.html              # Main application interface
+├── script.js               # Core application logic
+├── styles.css              # Modern UI styling
+├── textbook-data.js        # Textbook database (2,371+ entries)
+├── display-config.js       # UI configuration management
+├── fallback-proxy-config.js # Proxy configuration system
+└── location-detection.js   # Location detection logic
+```
+
+### Location Detection Flow
+```mermaid
+graph TD
+    A[User Visits Site] --> B[Check URL Parameters]
+    B --> C{isChina Parameter?}
+    C -->|Yes| D[Use Parameter Value]
+    C -->|No| E[IP Geolocation API]
+    E --> F{API Success?}
+    F -->|Yes| G[Use API Result]
+    F -->|No| H[Timezone Fallback]
+    H --> I[Browser Language Check]
+    D --> J[Serve Appropriate URLs]
+    G --> J
+    I --> J
+```
+
+### URL Strategy
+- **China Users**: jsDelivr CDN → Configurable Proxy Fallback
+- **International Users**: Direct GitHub Raw URLs
+- **Fallback System**: Ensures 100% accessibility across all regions
+
+## 📊 Statistics
+
+| Metric | Value |
+|--------|-------|
+| **Total Textbooks** | 2,371+ |
+| **Education Levels** | 6 |
+| **Subjects** | 27 |
+| **Publishers** | 125+ |
+| **jsDelivr Success Rate** | 63.3% |
+| **Fallback Coverage** | 100% |
+| **Split Files** | 466 |
+
+## 🔧 Configuration
+
+### Proxy Configuration
+Edit `fallback-proxy-config.js` to change the proxy service:
+```javascript
+window.FALLBACK_PROXY_CONFIG = {
+    currentProxy: 'https://your-proxy-service.com/',
+    // ... other configuration
+};
+```
+
+### Display Configuration
+Modify `display-config.js` to customize the UI:
+```javascript
+const displayConfig = {
+    levels: {
+        '小学': { enabled: true, displayRules: {...} },
+        // ... other levels
+    }
+};
+```
+
+## 🌐 Deployment
+
+### Recommended Platforms
+1. **Vercel** (Best for China performance)
+   ```bash
+   npm i -g vercel
+   vercel --prod
+   ```
+
+2. **GitHub Pages**
+   - Enable in repository settings
+   - Automatic deployment from main branch
+
+3. **Netlify**
+   ```bash
+   npm i -g netlify-cli
+   netlify deploy --prod
+   ```
+
+### Performance Optimization
+- All static files (HTML, CSS, JS)
+- No server-side processing required
+- CDN-friendly architecture
+- Optimized for global distribution
+
+## 🤝 Contributing
+
+We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details.
+
+### Development Setup
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature-name`
+3. Make your changes and test thoroughly
+4. Submit a pull request with a clear description
+
+### Areas for Contribution
+- 🌍 Additional proxy services
+- 🎨 UI/UX improvements
+- 📱 Mobile optimization
+- 🔧 Performance enhancements
+- 📚 Database updates
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## ⚠️ Disclaimer
+
+This project is for educational and research purposes only. All textbooks are property of their respective publishers and authors. Please support official publications.
+
+## 🙏 Acknowledgments
+
+- **TapXWorld/ChinaTextbook**: Original textbook database
+- **jsDelivr**: Fast CDN service for China users
+- **GitHub**: Reliable file hosting and version control
+- **Open Source Community**: Various proxy services and tools
+
+---
+
+<div align="center">
+  <p>Made with ❤️ for Chinese education</p>
+  <p>
+    <a href="https://github.com/rong2ren/textbook/issues">Report Bug</a> •
+    <a href="https://github.com/rong2ren/textbook/issues">Request Feature</a> •
+    <a href="https://github.com/rong2ren/textbook/discussions">Discussions</a>
+  </p>
+</div> 
