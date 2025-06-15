@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>显示配置管理 - Display Configuration</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2c5aa0;
+            --secondary-color: #34495e;
+            --success-color: #27ae60;
+            --warning-color: #f39c12;
+            --danger-color: #e74c3c;
+            --light-bg: #f8f9fa;
+            --border-color: #dee2e6;
+            --text-color: #2c3e50;
+            --text-muted: #6c757d;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        .back-link {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            color: white;
+            text-decoration: none;
+            font-size: 1.2rem;
+            padding: 8px 16px;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.2);
+            transition: all 0.3s ease;
+        }
+
+        .back-link:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .section-header {
+            background: var(--light-bg);
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .section-header h2 {
+            color: var(--text-color);
+            font-size: 1.4rem;
+            margin-bottom: 5px;
+        }
+
+        .section-header p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .section-body {
+            padding: 20px;
+        }
+
+        .level-list {
+            list-style: none;
+        }
+
+        .level-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            margin-bottom: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: white;
+            cursor: move;
+            transition: all 0.3s ease;
+        }
+
+        .level-item:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+
+        .level-item.sortable-ghost {
+            opacity: 0.5;
+        }
+
+        .level-item.sortable-chosen {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .drag-handle {
+            color: var(--text-muted);
+            margin-right: 15px;
+            font-size: 1.2rem;
+            cursor: grab;
+        }
+
+        .drag-handle:active {
+            cursor: grabbing;
+        }
+
+        .level-icon {
+            margin-right: 15px;
+            width: 30px;
+            text-align: center;
+            font-size: 1.3rem;
+            color: var(--primary-color);
+        }
+
+        .level-info {
+            flex-grow: 1;
+        }
+
+        .level-name {
+            font-weight: 600;
+            color: var(--text-color);
+            font-size: 1.1rem;
+            margin-bottom: 3px;
+        }
+
+        .level-english {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .level-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 50px;
+            height: 25px;
+            background: #ddd;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .toggle-switch.active {
+            background: var(--success-color);
+        }
+
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 21px;
+            height: 21px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .toggle-switch.active::after {
+            transform: translateX(25px);
+        }
+
+        .config-btn {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 6px;
+            background: var(--primary-color);
+            color: white;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .config-btn:hover {
+            background: var(--secondary-color);
+            transform: translateY(-1px);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            padding: 30px 0;
+            border-top: 1px solid var(--border-color);
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(44, 90, 160, 0.3);
+        }
+
+        .btn-success {
+            background: var(--success-color);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #229954;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
+        }
+
+        .btn-warning {
+            background: var(--warning-color);
+            color: white;
+        }
+
+        .btn-warning:hover {
+            background: #e67e22;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(243, 156, 18, 0.3);
+        }
+
+        .status-indicator {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-enabled {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-disabled {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .preview-section {
+            background: var(--light-bg);
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .preview-header {
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--text-color);
+        }
+
+        .level-preview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .level-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 8px 12px;
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            font-size: 0.9rem;
+            color: var(--text-color);
+        }
+
+        .level-tag.disabled {
+            opacity: 0.5;
+            text-decoration: line-through;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: 8px;
+            color: white;
+            font-weight: 600;
+            z-index: 1000;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.success {
+            background: var(--success-color);
+        }
+
+        .notification.error {
+            background: var(--danger-color);
+        }
+
+        .help-text {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .help-text p {
+            margin: 0;
+            color: #1565c0;
+            font-size: 0.95rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                border-radius: 10px;
+            }
+
+            .header {
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 1.6rem;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .back-link {
+                position: static;
+                display: inline-block;
+                margin-bottom: 20px;
+            }
+
+            .level-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .level-controls {
+                align-self: flex-end;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="index.html" class="back-link">
+                <i class="fas fa-arrow-left"></i> 返回主页
+            </a>
+            <h1><i class="fas fa-cogs"></i> 显示配置管理</h1>
+            <p>管理教育级别的显示顺序和启用状态</p>
+        </div>
+
+        <div class="content">
+            <!-- Level Order Management -->
+            <div class="section">
+                <div class="section-header">
+                    <h2><i class="fas fa-sort"></i> 教育级别顺序管理</h2>
+                    <p>拖拽调整教育级别在网站上的显示顺序，切换开关启用或禁用特定级别</p>
+                </div>
+                <div class="section-body">
+                    <div class="help-text">
+                        <p><i class="fas fa-info-circle"></i> 
+                        拖拽左侧的手柄图标可以重新排序级别。使用右侧的开关可以启用或禁用特定的教育级别。禁用的级别将不会在主页上显示。
+                        </p>
+                    </div>
+                    
+                    <ul id="levelList" class="level-list">
+                        <!-- Level items will be populated by JavaScript -->
+                    </ul>
+
+                    <div class="preview-section">
+                        <div class="preview-header">
+                            <i class="fas fa-eye"></i> 当前显示预览：
+                        </div>
+                        <div id="levelPreview" class="level-preview">
+                            <!-- Preview will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <button id="saveConfig" class="btn btn-success">
+                    <i class="fas fa-save"></i> 保存配置
+                </button>
+                <button id="resetConfig" class="btn btn-warning">
+                    <i class="fas fa-undo"></i> 重置为默认
+                </button>
+                <button id="exportConfig" class="btn btn-primary">
+                    <i class="fas fa-download"></i> 导出配置
+                </button>
+                <input type="file" id="importConfig" accept=".json" style="display: none;">
+                <button id="importConfigBtn" class="btn btn-primary">
+                    <i class="fas fa-upload"></i> 导入配置
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div id="notification" class="notification"></div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+    <script src="display-config.js"></script>
+    <script>
+        let configManager;
+        let sortable;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            configManager = new DisplayConfigManager();
+            initializeLevelList();
+            setupEventListeners();
+            updatePreview();
+        });
+
+        function initializeLevelList() {
+            const levelList = document.getElementById('levelList');
+            const levels = configManager.config.levelOrder;
+
+            levelList.innerHTML = '';
+
+            levels.forEach((level, index) => {
+                const listItem = document.createElement('li');
+                listItem.className = 'level-item';
+                listItem.dataset.key = level.key;
+                
+                listItem.innerHTML = `
+                    <i class="fas fa-grip-vertical drag-handle"></i>
+                    <i class="${level.icon} level-icon"></i>
+                    <div class="level-info">
+                        <div class="level-name">${level.name}</div>
+                        <div class="level-english">${level.english}</div>
+                    </div>
+                    <div class="level-controls">
+                        <span class="status-indicator ${level.enabled ? 'status-enabled' : 'status-disabled'}">
+                            ${level.enabled ? '启用' : '禁用'}
+                        </span>
+                        <div class="toggle-switch ${level.enabled ? 'active' : ''}" 
+                             data-key="${level.key}">
+                        </div>
+                    </div>
+                `;
+
+                levelList.appendChild(listItem);
+            });
+
+            // Initialize SortableJS
+            sortable = Sortable.create(levelList, {
+                handle: '.drag-handle',
+                animation: 150,
+                ghostClass: 'sortable-ghost',
+                chosenClass: 'sortable-chosen',
+                onEnd: function(evt) {
+                    updateLevelOrder();
+                    updatePreview();
+                }
+            });
+        }
+
+        function setupEventListeners() {
+            // Toggle switches
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('toggle-switch')) {
+                    const levelKey = e.target.dataset.key;
+                    const isActive = e.target.classList.contains('active');
+                    
+                    // Toggle state
+                    e.target.classList.toggle('active');
+                    
+                    // Update status indicator
+                    const statusIndicator = e.target.parentNode.querySelector('.status-indicator');
+                    if (isActive) {
+                        statusIndicator.classList.remove('status-enabled');
+                        statusIndicator.classList.add('status-disabled');
+                        statusIndicator.textContent = '禁用';
+                    } else {
+                        statusIndicator.classList.remove('status-disabled');
+                        statusIndicator.classList.add('status-enabled');
+                        statusIndicator.textContent = '启用';
+                    }
+
+                    // Update configuration
+                    const level = configManager.config.levelOrder.find(l => l.key === levelKey);
+                    if (level) {
+                        level.enabled = !isActive;
+                    }
+
+                    updatePreview();
+                }
+            });
+
+            // Save configuration
+            document.getElementById('saveConfig').addEventListener('click', function() {
+                configManager.saveConfig();
+                showNotification('配置已保存！页面将在3秒后刷新...', 'success');
+                setTimeout(() => {
+                    window.location.reload();
+                }, 3000);
+            });
+
+            // Reset configuration
+            document.getElementById('resetConfig').addEventListener('click', function() {
+                if (confirm('确定要重置为默认配置吗？这将清除所有自定义设置。')) {
+                    localStorage.removeItem('displayConfig');
+                    configManager = new DisplayConfigManager();
+                    initializeLevelList();
+                    updatePreview();
+                    showNotification('配置已重置为默认值', 'success');
+                }
+            });
+
+            // Export configuration
+            document.getElementById('exportConfig').addEventListener('click', function() {
+                const config = configManager.config;
+                const dataStr = JSON.stringify(config, null, 2);
+                const dataBlob = new Blob([dataStr], {type: 'application/json'});
+                
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(dataBlob);
+                link.download = 'display-config.json';
+                link.click();
+                
+                showNotification('配置文件已导出', 'success');
+            });
+
+            // Import configuration
+            document.getElementById('importConfigBtn').addEventListener('click', function() {
+                document.getElementById('importConfig').click();
+            });
+
+            document.getElementById('importConfig').addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        try {
+                            const config = JSON.parse(e.target.result);
+                            configManager.config = configManager.mergeWithDefaults(config);
+                            initializeLevelList();
+                            updatePreview();
+                            showNotification('配置文件已导入', 'success');
+                        } catch (error) {
+                            showNotification('配置文件格式错误', 'error');
+                        }
+                    };
+                    reader.readAsText(file);
+                }
+            });
+        }
+
+        function updateLevelOrder() {
+            const levelItems = document.querySelectorAll('.level-item');
+            const newOrder = [];
+            
+            levelItems.forEach(item => {
+                const levelKey = item.dataset.key;
+                const level = configManager.config.levelOrder.find(l => l.key === levelKey);
+                if (level) {
+                    newOrder.push(level);
+                }
+            });
+            
+            configManager.config.levelOrder = newOrder;
+        }
+
+        function updatePreview() {
+            const preview = document.getElementById('levelPreview');
+            const enabledLevels = configManager.getEnabledLevels();
+            
+            preview.innerHTML = '';
+            
+            configManager.config.levelOrder.forEach(level => {
+                const tag = document.createElement('div');
+                tag.className = `level-tag ${!level.enabled ? 'disabled' : ''}`;
+                tag.innerHTML = `
+                    <i class="${level.icon}"></i>
+                    ${level.name}
+                `;
+                preview.appendChild(tag);
+            });
+        }
+
+        function showNotification(message, type) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = `notification ${type}`;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+    </script>
+</body>
+</html> 

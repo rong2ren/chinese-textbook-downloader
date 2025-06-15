@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>下载测试 - Download Test</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Microsoft YaHei', sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        
+        .test-container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .status {
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-weight: 600;
+        }
+        
+        .loading {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+        
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .info-card {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #007bff;
+        }
+        
+        .info-card h4 {
+            margin: 0 0 10px 0;
+            color: #495057;
+        }
+        
+        .info-card p {
+            margin: 5px 0;
+            font-size: 14px;
+        }
+        
+        .test-button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .test-button:hover {
+            background: #0056b3;
+            transform: translateY(-1px);
+        }
+        
+        .url-examples {
+            margin-top: 20px;
+            padding: 15px;
+            background: #e9ecef;
+            border-radius: 8px;
+        }
+        
+        .url-examples h4 {
+            margin-top: 0;
+        }
+        
+        .url-examples code {
+            background: white;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 12px;
+            display: block;
+            margin: 5px 0;
+            word-break: break-all;
+        }
+        
+        @media (max-width: 768px) {
+            .info-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .test-container {
+                padding: 20px;
+            }
+            
+            .test-button {
+                width: 100%;
+                margin: 5px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🌍 下载测试</h1>
+        <p>此页面用于测试中国教材网站的下载系统，确保为不同地区用户提供最佳的下载体验。</p>
+        <p><small>This page tests the download system for optimal download experience.</small></p>
+        
+        <div id="status" class="status loading">
+            🔍 正在检测您的位置...
+        </div>
+        
+        <div class="info-grid">
+            <div class="info-card">
+                <h4>🌐 浏览器信息</h4>
+                <p><strong>语言:</strong> <span id="browser-lang">-</span></p>
+                <p><strong>时区:</strong> <span id="browser-tz">-</span></p>
+                <p><strong>用户代理:</strong> <span id="user-agent">-</span></p>
+            </div>
+            
+            <div class="info-card">
+                <h4>📍 检测到的位置</h4>
+                <p><strong>国家:</strong> <span id="detected-country">-</span></p>
+                <p><strong>国家代码:</strong> <span id="detected-code">-</span></p>
+                <p><strong>城市:</strong> <span id="detected-city">-</span></p>
+            </div>
+        </div>
+        
+        <div class="url-examples">
+            <h4>📥 下载策略</h4>
+            <p><strong>主要下载链接:</strong></p>
+            <code id="primary-url">-</code>
+            <p><strong>备用下载链接:</strong></p>
+            <code id="fallback-url">-</code>
+        </div>
+        
+        <div style="margin-top: 20px;">
+            <button class="test-button" onclick="testDownload()">🧪 测试下载</button>
+            <button class="test-button" onclick="redetectLocation()">🔄 重新检测位置</button>
+        </div>
+        
+        <div id="admin-test-section" style="margin-top: 20px; padding: 15px; background: #fff3cd; border: 1px solid #ffeaa7; border-radius: 8px; display: none;">
+            <h4>🧪 测试模式 (管理员)</h4>
+            <p>强制模拟不同地区用户进行测试:</p>
+            <button class="test-button" onclick="forceTestAsChina()" style="background: #dc3545;">🇨🇳 模拟中国用户</button>
+            <button class="test-button" onclick="forceTestAsInternational()" style="background: #28a745;">🌍 模拟国际用户</button>
+        </div>
+        
+        <div id="test-results" style="margin-top: 20px;"></div>
+    </div>
+
+    <script src="location-detection.js"></script>
+    <script>
+        let detector = null;
+        
+        async function initTest() {
+            // 显示浏览器信息
+            document.getElementById('browser-lang').textContent = navigator.language || '未知';
+            document.getElementById('browser-tz').textContent = Intl.DateTimeFormat().resolvedOptions().timeZone || '未知';
+            document.getElementById('user-agent').textContent = navigator.userAgent.substring(0, 50) + '...';
+            
+            // 初始化位置检测器
+            detector = new LocationBasedDownloader();
+            
+            try {
+                await detector.detectLocationWithAPI();
+                showResults();
+            } catch (error) {
+                showError(error);
+            }
+        }
+        
+        function showResults() {
+            const status = document.getElementById('status');
+            status.className = 'status success';
+            status.innerHTML = detector.isChina ? 
+                '🇨🇳 检测结果: 中国用户' : 
+                '🌍 检测结果: 国际用户';
+            
+            // 显示位置详情
+            if (detector.userLocation) {
+                document.getElementById('detected-country').textContent = detector.userLocation.country || '未知';
+                document.getElementById('detected-code').textContent = detector.userLocation.countryCode || '未知';
+                document.getElementById('detected-city').textContent = detector.userLocation.city || '未知';
+            }
+            
+            // 显示URL示例 - 使用实际的textbook data中的URL
+            const sampleEntry = {
+                international_url: "https://raw.githubusercontent.com/TapXWorld/ChinaTextbook/master/%E5%88%9D%E4%B8%AD/%E4%BA%BA%E6%96%87%E5%9C%B0%E7%90%86/%E7%BB%9F%E7%BC%96%E7%89%88-%E4%BA%BA%E6%B0%91%E6%95%99%E8%82%B2%E5%87%BA%E7%89%88%E7%A4%BE/%E4%B8%83%E5%B9%B4%E7%BA%A7/%E4%B9%89%E5%8A%A1%E6%95%99%E8%82%B2%E6%95%99%E7%A7%91%E4%B9%A6%C2%B7%E4%BA%BA%E6%96%87%E5%9C%B0%E7%90%86%E4%B8%8A%E5%86%8C.pdf",
+                china_url: "https://ghfast.top/https://raw.githubusercontent.com/TapXWorld/ChinaTextbook/master/%E5%88%9D%E4%B8%AD/%E4%BA%BA%E6%96%87%E5%9C%B0%E7%90%86/%E7%BB%9F%E7%BC%96%E7%89%88-%E4%BA%BA%E6%B0%91%E6%95%99%E8%82%B2%E5%87%BA%E7%89%88%E7%A4%BE/%E4%B8%83%E5%B9%B4%E7%BA%A7/%E4%B9%89%E5%8A%A1%E6%95%99%E8%82%B2%E6%95%99%E7%A7%91%E4%B9%A6%C2%B7%E4%BA%BA%E6%96%87%E5%9C%B0%E7%90%86%E4%B8%8A%E5%86%8C.pdf",
+                jsdelivr_works: false,
+                file_size: 21220488
+            };
+            
+            if (detector.isChina) {
+                document.getElementById('primary-url').textContent = sampleEntry.china_url;
+                document.getElementById('fallback-url').textContent = sampleEntry.international_url;
+            } else {
+                document.getElementById('primary-url').textContent = sampleEntry.international_url;
+                document.getElementById('fallback-url').textContent = 'N/A (不需要备用链接)';
+            }
+        }
+        
+        function showError(error) {
+            const status = document.getElementById('status');
+            status.className = 'status error';
+            status.innerHTML = `❌ 检测失败: ${error.message}`;
+        }
+        
+        async function redetectLocation() {
+            const status = document.getElementById('status');
+            status.className = 'status loading';
+            status.innerHTML = '🔍 正在重新检测位置...';
+            
+            // 清空之前的结果
+            document.getElementById('detected-country').textContent = '-';
+            document.getElementById('detected-code').textContent = '-';
+            document.getElementById('detected-city').textContent = '-';
+            document.getElementById('primary-url').textContent = '-';
+            document.getElementById('fallback-url').textContent = '-';
+            
+            try {
+                await detector.detectLocationWithAPI();
+                showResults();
+            } catch (error) {
+                showError(error);
+            }
+        }
+        
+        function testDownload() {
+            const resultsDiv = document.getElementById('test-results');
+            
+            // 使用实际的预计算URL而不是动态生成
+            const sampleEntry = {
+                international_url: "https://raw.githubusercontent.com/TapXWorld/ChinaTextbook/master/%E5%88%9D%E4%B8%AD/%E4%BA%BA%E6%96%87%E5%9C%B0%E7%90%86/%E7%BB%9F%E7%BC%96%E7%89%88-%E4%BA%BA%E6%B0%91%E6%95%99%E8%82%B2%E5%87%BA%E7%89%88%E7%A4%BE/%E4%B8%83%E5%B9%B4%E7%BA%A7/%E4%B9%89%E5%8A%A1%E6%95%99%E8%82%B2%E6%95%99%E7%A7%91%E4%B9%A6%C2%B7%E4%BA%BA%E6%96%87%E5%9C%B0%E7%90%86%E4%B8%8A%E5%86%8C.pdf",
+                china_url: "https://ghfast.top/https://raw.githubusercontent.com/TapXWorld/ChinaTextbook/master/%E5%88%9D%E4%B8%AD/%E4%BA%BA%E6%96%87%E5%9C%B0%E7%90%86/%E7%BB%9F%E7%BC%96%E7%89%88-%E4%BA%BA%E6%B0%91%E6%95%99%E8%82%B2%E5%87%BA%E7%89%88%E7%A4%BE/%E4%B8%83%E5%B9%B4%E7%BA%A7/%E4%B9%89%E5%8A%A1%E6%95%99%E8%82%B2%E6%95%99%E7%A7%91%E4%B9%A6%C2%B7%E4%BA%BA%E6%96%87%E5%9C%B0%E7%90%86%E4%B8%8A%E5%86%8C.pdf",
+                jsdelivr_works: false,
+                file_size: 21220488
+            };
+            
+            const downloadUrl = detector.isChina ? sampleEntry.china_url : sampleEntry.international_url;
+            const urlType = detector.isChina ? 'ghfast.top代理' : 'GitHub直连';
+            
+            resultsDiv.innerHTML = `
+                <div class="status success">
+                    <strong>🧪 测试下载已启动: 请查看浏览器的下载管理器或下载文件夹，文件大小约20MB，下载可能需要一些时间</strong><br>
+                    <button onclick="this.parentElement.parentElement.innerHTML=''" style="margin-top: 10px; padding: 5px 10px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 12px;">✓ 知道了</button>
+                </div>
+            `;
+            
+            // 创建测试下载
+            const link = document.createElement('a');
+            link.href = downloadUrl;
+            link.download = '义务教育教科书·人文地理上册.pdf';
+            link.target = '_blank';
+            
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+        
+        // 强制测试模式函数
+        function forceTestAsChina() {
+            // 强制设置为中国用户
+            detector.isChina = true;
+            detector.userLocation = {
+                country: 'China',
+                countryCode: 'CN',
+                city: 'Beijing'
+            };
+            
+            const status = document.getElementById('status');
+            status.className = 'status success';
+            status.innerHTML = '🇨🇳 检测结果: 中国用户 (测试模式)';
+            
+            // 显示位置详情
+            document.getElementById('detected-country').textContent = 'China (测试)';
+            document.getElementById('detected-code').textContent = 'CN';
+            document.getElementById('detected-city').textContent = 'Beijing (测试)';
+            
+            // 显示URL示例 - 使用实际的textbook data中的URL
+            const sampleEntry = {
+                international_url: "https://raw.githubusercontent.com/TapXWorld/ChinaTextbook/master/%E5%88%9D%E4%B8%AD/%E4%BA%BA%E6%96%87%E5%9C%B0%E7%90%86/%E7%BB%9F%E7%BC%96%E7%89%88-%E4%BA%BA%E6%B0%91%E6%95%99%E8%82%B2%E5%87%BA%E7%89%88%E7%A4%BE/%E4%B8%83%E5%B9%B4%E7%BA%A7/%E4%B9%89%E5%8A%A1%E6%95%99%E8%82%B2%E6%95%99%E7%A7%91%E4%B9%A6%C2%B7%E4%BA%BA%E6%96%87%E5%9C%B0%E7%90%86%E4%B8%8A%E5%86%8C.pdf",
+                china_url: "https://ghfast.top/https://raw.githubusercontent.com/TapXWorld/ChinaTextbook/master/%E5%88%9D%E4%B8%AD/%E4%BA%BA%E6%96%87%E5%9C%B0%E7%90%86/%E7%BB%9F%E7%BC%96%E7%89%88-%E4%BA%BA%E6%B0%91%E6%95%99%E8%82%B2%E5%87%BA%E7%89%88%E7%A4%BE/%E4%B8%83%E5%B9%B4%E7%BA%A7/%E4%B9%89%E5%8A%A1%E6%95%99%E8%82%B2%E6%95%99%E7%A7%91%E4%B9%A6%C2%B7%E4%BA%BA%E6%96%87%E5%9C%B0%E7%90%86%E4%B8%8A%E5%86%8C.pdf",
+                jsdelivr_works: false
+            };
+            
+            document.getElementById('primary-url').textContent = sampleEntry.china_url;
+            document.getElementById('fallback-url').textContent = sampleEntry.international_url;
+        }
+        
+        function forceTestAsInternational() {
+            // 强制设置为国际用户
+            detector.isChina = false;
+            detector.userLocation = {
+                country: 'United States',
+                countryCode: 'US',
+                city: 'New York'
+            };
+            
+            const status = document.getElementById('status');
+            status.className = 'status success';
+            status.innerHTML = '🌍 检测结果: 国际用户 (测试模式)';
+            
+            // 显示位置详情
+            document.getElementById('detected-country').textContent = 'United States (测试)';
+            document.getElementById('detected-code').textContent = 'US';
+            document.getElementById('detected-city').textContent = 'New York (测试)';
+            
+            // 显示URL示例 - 使用实际的textbook data中的URL
+            const sampleEntry = {
+                international_url: "https://raw.githubusercontent.com/TapXWorld/ChinaTextbook/master/%E5%88%9D%E4%B8%AD/%E4%BA%BA%E6%96%87%E5%9C%B0%E7%90%86/%E7%BB%9F%E7%BC%96%E7%89%88-%E4%BA%BA%E6%B0%91%E6%95%99%E8%82%B2%E5%87%BA%E7%89%88%E7%A4%BE/%E4%B8%83%E5%B9%B4%E7%BA%A7/%E4%B9%89%E5%8A%A1%E6%95%99%E8%82%B2%E6%95%99%E7%A7%91%E4%B9%A6%C2%B7%E4%BA%BA%E6%96%87%E5%9C%B0%E7%90%86%E4%B8%8A%E5%86%8C.pdf",
+                china_url: "https://ghfast.top/https://raw.githubusercontent.com/TapXWorld/ChinaTextbook/master/%E5%88%9D%E4%B8%AD/%E4%BA%BA%E6%96%87%E5%9C%B0%E7%90%86/%E7%BB%9F%E7%BC%96%E7%89%88-%E4%BA%BA%E6%B0%91%E6%95%99%E8%82%B2%E5%87%BA%E7%89%88%E7%A4%BE/%E4%B8%83%E5%B9%B4%E7%BA%A7/%E4%B9%89%E5%8A%A1%E6%95%99%E8%82%B2%E6%95%99%E7%A7%91%E4%B9%A6%C2%B7%E4%BA%BA%E6%96%87%E5%9C%B0%E7%90%86%E4%B8%8A%E5%86%8C.pdf",
+                jsdelivr_works: false
+            };
+            
+            document.getElementById('primary-url').textContent = sampleEntry.international_url;
+            document.getElementById('fallback-url').textContent = 'N/A (不需要备用链接)';
+        }
+
+        // 检查是否为管理员模式
+        function checkAdminMode() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const isAdmin = urlParams.get('isAdmin') === 'true';
+            
+            if (isAdmin) {
+                document.getElementById('admin-test-section').style.display = 'block';
+                console.log('🔧 管理员模式已启用');
+            }
+        }
+
+        // 页面加载时初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAdminMode();
+            initTest();
+        });
+    </script>
+</body>
+</html> 

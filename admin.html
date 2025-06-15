@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Textbook Data Admin Panel</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .admin-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .admin-header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .admin-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .admin-header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 30px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            border-left: 4px solid #007bff;
+        }
+
+        .stat-card .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #007bff;
+            margin-bottom: 5px;
+        }
+
+        .stat-card .stat-label {
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+
+        .controls {
+            padding: 20px 30px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 300px;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 12px 45px 12px 15px;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+
+        .search-box i {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6c757d;
+        }
+
+        .filter-select {
+            padding: 12px 15px;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            font-size: 1rem;
+            background: white;
+            min-width: 150px;
+        }
+
+        .data-table-container {
+            max-height: 600px;
+            overflow-y: auto;
+            margin: 0 30px 30px 30px;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        .data-table th {
+            background: #f8f9fa;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            color: #495057;
+            border-bottom: 2px solid #dee2e6;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .data-table td {
+            padding: 12px;
+            border-bottom: 1px solid #dee2e6;
+            vertical-align: top;
+        }
+
+        .data-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .path-cell {
+            font-family: monospace;
+            font-size: 0.85rem;
+            max-width: 300px;
+            word-break: break-all;
+            color: #495057;
+        }
+
+        .metadata-cell {
+            font-size: 0.9rem;
+        }
+
+        .level-tag, .subject-tag, .grade-tag, .publisher-tag {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            margin: 2px;
+            font-weight: 500;
+        }
+
+        .level-tag {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .subject-tag {
+            background: #f3e5f5;
+            color: #7b1fa2;
+        }
+
+        .grade-tag {
+            background: #e8f5e8;
+            color: #388e3c;
+        }
+
+        .publisher-tag {
+            background: #fff3e0;
+            color: #f57c00;
+        }
+
+        .semester-tag {
+            background: #f1f8e9;
+            color: #689f38;
+        }
+
+        .split-indicator {
+            background: #ffebee;
+            color: #c62828;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        .unknown-indicator {
+            background: #ffcdd2;
+            color: #d32f2f;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        .problem-indicator {
+            background: #fff3cd;
+            color: #856404;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #6c757d;
+        }
+
+        .loading i {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .footer {
+            padding: 20px 30px;
+            background: #f8f9fa;
+            text-align: center;
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+
+        .export-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.3s;
+        }
+
+        .export-btn:hover {
+            background: #218838;
+        }
+
+        .refresh-btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.3s;
+        }
+
+        .refresh-btn:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <div class="admin-header">
+            <h1><i class="fas fa-cogs"></i> Textbook Data Admin Panel</h1>
+            <p>Path-to-Metadata Mapping Analysis & Debugging Tool</p>
+        </div>
+
+        <div class="stats-grid" id="statsGrid">
+            <div class="loading">
+                <i class="fas fa-spinner"></i>
+                <div>Loading statistics...</div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Search by path, level, subject, grade, or publisher...">
+                <i class="fas fa-search"></i>
+            </div>
+            <select class="filter-select" id="levelFilter">
+                <option value="">All Levels</option>
+            </select>
+            <select class="filter-select" id="subjectFilter">
+                <option value="">All Subjects</option>
+            </select>
+            <select class="filter-select" id="statusFilter">
+                <option value="">All Files</option>
+                <option value="split">Split Files Only</option>
+                <option value="problems">Problem Files</option>
+            </select>
+            <button class="refresh-btn" onclick="refreshData()">
+                <i class="fas fa-sync-alt"></i> Refresh
+            </button>
+            <button class="export-btn" onclick="exportData()">
+                <i class="fas fa-download"></i> Export CSV
+            </button>
+            <a href="location-detection.html?isAdmin=true" class="refresh-btn" style="text-decoration: none; display: inline-block;">
+                <i class="fas fa-vial"></i> 测试下载页面
+            </a>
+        </div>
+
+        <div class="data-table-container">
+            <table class="data-table" id="dataTable">
+                <thead>
+                    <tr>
+                        <th>File Path</th>
+                        <th>Original Filename</th>
+                        <th>Level</th>
+                        <th>Subject</th>
+                        <th>Grade</th>
+                        <th>Publisher</th>
+                        <th>Semester</th>
+                        <th>Status</th>
+                        <th>File Size</th>
+                    </tr>
+                </thead>
+                <tbody id="dataTableBody">
+                    <tr>
+                        <td colspan="9" class="loading">
+                            <i class="fas fa-spinner"></i>
+                            <div>Loading textbook data...</div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="footer">
+            <p>Admin Panel for Chinese Textbook Database • Generated from TapXWorld/ChinaTextbook Repository</p>
+        </div>
+    </div>
+
+    <script src="textbook-data.js"></script>
+    <script>
+        let allData = [];
+        let filteredData = [];
+
+        // Initialize admin panel
+        document.addEventListener('DOMContentLoaded', function() {
+            loadData();
+            setupEventListeners();
+        });
+
+        function loadData() {
+            try {
+                // Add debugging information
+                console.log('Loading data...');
+                console.log('window.TEXTBOOK_DATA type:', typeof window.TEXTBOOK_DATA);
+                console.log('window.TEXTBOOK_DATA exists:', !!window.TEXTBOOK_DATA);
+                
+                // Use the global textbook data - try multiple sources
+                if (window.TEXTBOOK_DATA) {
+                    allData = window.TEXTBOOK_DATA;
+                } else if (window.textbookData && window.textbookData.data) {
+                    // If TEXTBOOK_DATA is not directly accessible, get it from the textbookData instance
+                    allData = window.textbookData.data;
+                } else {
+                    allData = [];
+                }
+                
+                console.log('Loaded', allData.length, 'textbook entries');
+                
+                if (allData.length === 0) {
+                    document.getElementById('dataTableBody').innerHTML = `
+                        <tr><td colspan="9" style="text-align: center; color: orange;">
+                            <i class="fas fa-exclamation-triangle"></i> 
+                            <div>No data loaded. This might be a CORS issue.</div>
+                            <div style="font-size: 0.8em; margin-top: 10px;">
+                                <strong>Try:</strong><br>
+                                1. Open with a local server: <code>python3 -m http.server 8000</code><br>
+                                2. Then go to: <code>http://localhost:8000/admin.html</code><br>
+                                3. Or check browser console for errors (F12)
+                            </div>
+                        </td></tr>
+                    `;
+                    
+                    // Also update stats to show the issue
+                    document.getElementById('statsGrid').innerHTML = `
+                        <div style="grid-column: 1 / -1; text-align: center; color: orange;">
+                            <h3><i class="fas fa-exclamation-triangle"></i> No Data Loaded</h3>
+                            <p>The textbook-data.js file couldn't be loaded. This is likely a CORS issue.</p>
+                            <p>Please serve this page through HTTP (not file://) for proper functionality.</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                generateStats();
+                populateFilters();
+                filterAndDisplayData();
+            } catch (error) {
+                console.error('Error loading data:', error);
+                document.getElementById('dataTableBody').innerHTML = `
+                    <tr><td colspan="9" style="text-align: center; color: red;">
+                        <i class="fas fa-exclamation-triangle"></i> Error loading data: ${error.message}
+                        <div style="font-size: 0.8em; margin-top: 10px;">
+                            Check browser console (F12) for more details.
+                        </div>
+                    </td></tr>
+                `;
+            }
+        }
+
+        function generateStats() {
+            const stats = {
+                total: allData.length,
+                mainFiles: allData.filter(item => !item.is_split).length,
+                splitFiles: allData.filter(item => item.is_split).length,
+                levels: new Set(allData.map(item => item.level)).size,
+                subjects: new Set(allData.map(item => item.subject)).size,
+                publishers: new Set(allData.map(item => item.publisher)).size,
+                problemFiles: allData.filter(item => 
+                    item.level === 'unknown' || 
+                    item.subject === 'unknown' || 
+                    item.grade === 'unknown' || 
+                    item.publisher === '未知出版社'
+                ).length,
+                totalSize: allData.reduce((sum, item) => sum + (item.file_size || 0), 0)
+            };
+
+            const statsGrid = document.getElementById('statsGrid');
+            statsGrid.innerHTML = `
+                <div class="stat-card">
+                    <div class="stat-number">${stats.total.toLocaleString()}</div>
+                    <div class="stat-label">Total Files</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">${stats.mainFiles.toLocaleString()}</div>
+                    <div class="stat-label">Main Files</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">${stats.splitFiles.toLocaleString()}</div>
+                    <div class="stat-label">Split Files</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">${stats.levels}</div>
+                    <div class="stat-label">Education Levels</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">${stats.subjects}</div>
+                    <div class="stat-label">Subjects</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">${stats.publishers}</div>
+                    <div class="stat-label">Publishers</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">${stats.problemFiles}</div>
+                    <div class="stat-label">Problem Files</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">${formatFileSize(stats.totalSize)}</div>
+                    <div class="stat-label">Total Size</div>
+                </div>
+            `;
+        }
+
+        function populateFilters() {
+            const levels = [...new Set(allData.map(item => item.level))].sort();
+            const subjects = [...new Set(allData.map(item => item.subject))].sort();
+
+            const levelFilter = document.getElementById('levelFilter');
+            const subjectFilter = document.getElementById('subjectFilter');
+
+            levels.forEach(level => {
+                const option = document.createElement('option');
+                option.value = level;
+                option.textContent = level;
+                levelFilter.appendChild(option);
+            });
+
+            subjects.forEach(subject => {
+                const option = document.createElement('option');
+                option.value = subject;
+                option.textContent = subject;
+                subjectFilter.appendChild(option);
+            });
+        }
+
+        function setupEventListeners() {
+            document.getElementById('searchInput').addEventListener('input', filterAndDisplayData);
+            document.getElementById('levelFilter').addEventListener('change', filterAndDisplayData);
+            document.getElementById('subjectFilter').addEventListener('change', filterAndDisplayData);
+            document.getElementById('statusFilter').addEventListener('change', filterAndDisplayData);
+        }
+
+        function filterAndDisplayData() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const levelFilter = document.getElementById('levelFilter').value;
+            const subjectFilter = document.getElementById('subjectFilter').value;
+            const statusFilter = document.getElementById('statusFilter').value;
+
+            filteredData = allData.filter(item => {
+                // Search filter
+                const searchMatch = !searchTerm || 
+                    item.file_path.toLowerCase().includes(searchTerm) ||
+                    item.file_name.toLowerCase().includes(searchTerm) ||
+                    item.level.toLowerCase().includes(searchTerm) ||
+                    item.subject.toLowerCase().includes(searchTerm) ||
+                    item.grade.toLowerCase().includes(searchTerm) ||
+                    item.publisher.toLowerCase().includes(searchTerm) ||
+                    item.title.toLowerCase().includes(searchTerm);
+
+                // Level filter
+                const levelMatch = !levelFilter || item.level === levelFilter;
+
+                // Subject filter
+                const subjectMatch = !subjectFilter || item.subject === subjectFilter;
+
+                // Status filter
+                let statusMatch = true;
+                if (statusFilter === 'split') {
+                    statusMatch = item.is_split;
+                } else if (statusFilter === 'problems') {
+                    statusMatch = item.level === 'unknown' || item.subject === 'unknown' || 
+                                item.grade === 'unknown' || item.publisher === '未知出版社';
+                }
+
+                return searchMatch && levelMatch && subjectMatch && statusMatch;
+            });
+
+            displayData(filteredData);
+        }
+
+        function displayData(data) {
+            const tbody = document.getElementById('dataTableBody');
+            
+            if (data.length === 0) {
+                tbody.innerHTML = `
+                    <tr><td colspan="9" style="text-align: center; color: #6c757d;">
+                        <i class="fas fa-search"></i> No files match the current filters
+                    </td></tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = data.map(item => `
+                <tr>
+                    <td class="path-cell">${item.file_path}</td>
+                    <td><code>${item.file_name}</code></td>
+                    <td>
+                        <span class="level-tag ${item.level === 'unknown' ? 'unknown-indicator' : ''}">${item.level}</span>
+                    </td>
+                    <td>
+                        <span class="subject-tag ${item.subject === 'unknown' ? 'unknown-indicator' : ''}">${item.subject}</span>
+                    </td>
+                    <td>
+                        <span class="grade-tag ${item.grade === 'unknown' ? 'unknown-indicator' : ''}">${item.grade}</span>
+                    </td>
+                    <td>
+                        <span class="publisher-tag ${item.publisher === '未知出版社' ? 'problem-indicator' : ''}">${item.publisher}</span>
+                    </td>
+                    <td>
+                        <span class="semester-tag">${item.semester}</span>
+                    </td>
+                    <td>
+                        ${item.is_split ? `<span class="split-indicator">Split Part ${item.part_number}</span>` : '<span style="color: #28a745;">✓ Main File</span>'}
+                        ${(item.level === 'unknown' || item.subject === 'unknown' || item.grade === 'unknown' || item.publisher === '未知出版社') ? '<br><span class="unknown-indicator">⚠️ Problem File</span>' : ''}
+                    </td>
+                    <td>${formatFileSize(item.file_size || 0)}</td>
+                </tr>
+            `).join('');
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 B';
+            const k = 1024;
+            const sizes = ['B', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+        }
+
+        function refreshData() {
+            location.reload();
+        }
+
+        function exportData() {
+            const csvContent = [
+                ['File Path', 'Original Filename', 'Level', 'Subject', 'Grade', 'Publisher', 'Semester', 'Is Split', 'Part Number', 'File Size'].join(','),
+                ...filteredData.map(item => [
+                    `"${item.file_path}"`,
+                    `"${item.file_name}"`,
+                    `"${item.level}"`,
+                    `"${item.subject}"`,
+                    `"${item.grade}"`,
+                    `"${item.publisher}"`,
+                    `"${item.semester}"`,
+                    item.is_split,
+                    item.part_number || '',
+                    item.file_size || 0
+                ].join(','))
+            ].join('\n');
+
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `textbook-data-export-${new Date().toISOString().split('T')[0]}.csv`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+        }
+    </script>
+</body>
+</html> 
