@@ -192,11 +192,11 @@ function updateUIForRegion(isChina) {
     if (regionIndicator) {
         if (isChina) {
             regionIndicator.innerHTML = `
-                <span class="region-text">中国用户 - <a href="location-detection.html" target="_blank" style="color: inherit; text-decoration: underline;">测试下载</a></span>
+                <span class="region-text">中国用户</span>
             `;
             regionIndicator.className = 'region-china';
         } else {
-            regionIndicator.innerHTML = `<span class="region-text">国际用户 - <a href="location-detection.html" target="_blank" style="color: inherit; text-decoration: underline;">测试下载</a></span>
+            regionIndicator.innerHTML = `<span class="region-text">国际用户</span>
             `;
             regionIndicator.className = 'region-international';
         }
