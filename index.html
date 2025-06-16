@@ -3,9 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>中国教材下载中心 - Chinese Textbook Download Center</title>
-    <meta name="description" content="免费下载中国小学、初中、高中、大学全套PDF教材，支持智能CDN加速，为中国用户优化">
-    <meta name="keywords" content="中国教材,PDF下载,小学教材,初中教材,高中教材,大学教材,免费教材">
+    <title>中国教材资源库 - Chinese Textbook Download Center</title>
+    <!-- China-optimized meta tags -->
+    <meta name="description" content="免费提供中国中小学大学全套PDF教材，教育资源合法下载">
+    <meta name="keywords" content="教材下载,小学课本,初中课本,高中课本,大学教材,教育资料">
+    <meta name="copyright" content="教材版权归原出版社所有，本平台仅提供学习参考">
+    <meta name="author" content="中国教育资源中心">
+    
+    <!-- Critical security tags for China -->
+    <meta name="content-security" content="education-resource">
+    <meta name="site-verification" content="educational-platform">
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
     
     <!-- Performance optimizations for jsDelivr CDN -->
@@ -80,17 +87,12 @@
                     </ol>
                     
                     <h3>您可以通过以下链接，下载文件合并程序：</h3>
-                    <a href="https://github.com/TapXWorld/ChinaTextbook-tools/releases" target="_blank" class="download-link" id="merger-download-link">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: middle; margin-right: 4px;"><path d="M5 20H19V18H5M19 9H15V3H9V9H5L12 16L19 9Z"/></svg> 下载文件合并程序
+                    <a href="https://github.com/TapXWorld/ChinaTextbook-tools/releases/download/v0.0.1/mergePDFs-windows-amd64.exe" target="_blank" class="download-link" id="merger-windows-download-link">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: middle; margin-right: 4px;"><path d="M5 20H19V18H5M19 9H15V3H9V9H5L12 16L19 9Z"/></svg> 下载Windows文件合并程序
                     </a>
-                    
-                    <div id="china-access-instructions" style="display: none; margin-top: 1rem; padding: 1rem; background: #fff3cd; border: 1px solid #ffeaa7; border-radius: 8px;">
-                        <p style="margin-bottom: 0.5rem; color: #856404;">中国用户下载合并程序说明：由于网络限制，您可能需要使用以下方法访问 GitHub 合并程序的下载页面：</p>
-                        <ol style="color: #856404; margin-bottom: 0;">
-                            <li><strong>使用代理工具</strong>：如 VPN、代理软件等</li>
-                            <li><strong>使用 GitHub 镜像站</strong>：如 ghproxy.com、fastgit.org 等</li>
-                        </ol>
-                    </div>
+                    <a href="https://github.com/TapXWorld/ChinaTextbook-tools/releases/download/v0.0.1/mergePDFs-darwin-amd64" target="_blank" class="download-link" id="merger-mac-download-link">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: middle; margin-right: 4px;"><path d="M5 20H19V18H5M19 9H15V3H9V9H5L12 16L19 9Z"/></svg> 下载Mac文件合并程序
+                    </a>
                 </div>
             </div>
         </dialog>
@@ -111,6 +113,41 @@
 
     <!-- Scripts -->
     <script>
+        // WeChat browser detection and warning banner
+        (function() {
+            // Check if user is using WeChat browser
+            const isWeChat = /MicroMessenger/i.test(navigator.userAgent);
+            
+            if (isWeChat) {
+                // Create warning banner
+                const wechatBanner = document.createElement('div');
+                wechatBanner.id = 'wechat-warning-banner';
+                wechatBanner.innerHTML = '📱 请点击右上角 "···" → 选择 "在浏览器中打开"，以正常下载文件。';
+                
+                // Style the banner
+                wechatBanner.style.cssText = `
+                    background-color: #fff3cd;
+                    color: #856404;
+                    padding: 12px 16px;
+                    text-align: center;
+                    font-size: 14px;
+                    line-height: 1.4;
+                    border-radius: 8px;
+                    margin: 10px;
+                    border: 1px solid #ffeaa7;
+                    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                    position: relative;
+                    z-index: 1000;
+                    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+                `;
+                
+                // Insert banner at the top of the page
+                document.body.insertBefore(wechatBanner, document.body.firstChild);
+                
+                console.log('📱 WeChat browser detected - warning banner displayed');
+            }
+        })();
+
         // Load textbook-data.js from jsDelivr with fallback
         (function() {
             const jsDelivrUrl = 'https://cdn.jsdelivr.net/gh/rong2ren/chinese-textbook-downloader@main/textbook-data.js';

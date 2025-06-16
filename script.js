@@ -1163,8 +1163,8 @@ function sortSubjects(subjects) {
 function openHelpModal() {
     const dialog = document.getElementById('helpModal');
     if (dialog) {
-        // Update merger download link and instructions based on user location
-        //updateMergerDownloadLink();
+        // Update merger download link based on user location
+        updateMergerDownloadLink();
         
         // Check if showModal is supported (native dialog support)
         if (typeof dialog.showModal === 'function') {
@@ -1180,15 +1180,15 @@ function openHelpModal() {
 
 // Update merger download link and instructions based on user location
 function updateMergerDownloadLink() {    
-    const mergerLink = document.getElementById('merger-download-link');
-    const chinaInstructions = document.getElementById('china-access-instructions');
+    const windowsMergerLink = document.getElementById('merger-windows-download-link');
+    const macMergerLink = document.getElementById('merger-mac-download-link');
     
-    if (!mergerLink || !chinaInstructions) return;
+    if (!windowsMergerLink || !macMergerLink) return;
 
     if (shouldUseChinaUrls()) {
-        chinaInstructions.style.display = 'block';
-    } else {
-        chinaInstructions.style.display = 'none';
+        //update the merger download link
+        windowsMergerLink.href = window.FALLBACK_PROXY_CONFIG.getCurrentProxy() + windowsMergerLink.href;
+        macMergerLink.href = window.FALLBACK_PROXY_CONFIG.getCurrentProxy() + macMergerLink.href;
     }
 }
 
