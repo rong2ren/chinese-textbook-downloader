@@ -723,7 +723,11 @@ const UIComponents = {
         // Help button
         const helpButton = document.createElement('button');
         helpButton.className = 'help-btn split-help-btn';
-        helpButton.onclick = openHelpModal;
+        helpButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            openHelpModal();
+        });
         
         const helpIcon = document.createElement('i');
         helpIcon.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12S6.48 22 12 22 22 17.52 22 12 17.52 2 12 2M12 17C11.45 17 11 16.55 11 16S11.45 15 12 15 13 15.45 13 16 12.55 17 12 17M13 13H11V6H13V13Z"/></svg>';
@@ -1159,6 +1163,9 @@ function sortSubjects(subjects) {
 function openHelpModal() {
     const dialog = document.getElementById('helpModal');
     if (dialog) {
+        // Update merger download link and instructions based on user location
+        //updateMergerDownloadLink();
+        
         // Check if showModal is supported (native dialog support)
         if (typeof dialog.showModal === 'function') {
             dialog.showModal();
@@ -1168,6 +1175,20 @@ function openHelpModal() {
             dialog.setAttribute('open', '');
             document.body.style.overflow = 'hidden';
         }
+    } 
+}
+
+// Update merger download link and instructions based on user location
+function updateMergerDownloadLink() {    
+    const mergerLink = document.getElementById('merger-download-link');
+    const chinaInstructions = document.getElementById('china-access-instructions');
+    
+    if (!mergerLink || !chinaInstructions) return;
+
+    if (shouldUseChinaUrls()) {
+        chinaInstructions.style.display = 'block';
+    } else {
+        chinaInstructions.style.display = 'none';
     }
 }
 

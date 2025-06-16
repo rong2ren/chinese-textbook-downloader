@@ -49,7 +49,10 @@
 ## 🚀 快速开始 | Quick Start
 
 ### 在线访问 | Online Access
-直接访问网站 | Visit directly: https://china-edu-books.vercel.app
+直接访问网站 | Visit directly:
+- https://china-edu-books.vercel.app
+- https://textbooks.schoolbase.org
+(Cloudflare and Vercel)
 
 ### 本地运行 | Local Development
 ```bash
@@ -110,6 +113,8 @@ curl "https://purge.jsdelivr.net/gh/rong2ren/chinese-textbook-downloader@main/te
 - **TapXWorld/ChinaTextbook**: 原始教材数据库 | Original textbook database
 - **jsDelivr**: 中国用户CDN服务 | CDN service for China users
 - **GitHub**: 可靠的文件托管 | Reliable file hosting
+- **Vercel**: 网站托管平台 | Website hosting platform
+- **Cloudflare**: 域名与DNS服务 | Domain and DNS services
 
 
 本项目仅用于教育和研究目的。所有教材版权归各自出版社和作者所有。请支持正版出版物。
