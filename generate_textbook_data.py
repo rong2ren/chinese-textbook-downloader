@@ -835,9 +835,7 @@ class GitHubTextbookScanner:
                     'semester': parsed['semester'] or 'unknown',
                     'publisher': parsed['publisher'],
                     'title': parsed['parsed_name'],
-                    'file_path': path,
                     'file_name': pdf_filename,
-                    'download_url': github_url,  # Keep for backward compatibility
                     'international_url': github_url,  # International users always use GitHub direct
                     'china_url': github_url,  # Will be updated after URL testing
                     'is_split': parsed['is_split'],
@@ -863,13 +861,12 @@ class GitHubTextbookScanner:
             
             # Update textbook entries with tested URLs
             for textbook in textbooks:
-                github_url = textbook['download_url']
+                github_url = textbook['international_url']
                 if github_url in url_results:
                     result_data = url_results[github_url]
                     textbook['china_url'] = result_data['urls']['china_url']
                     # Add testing metadata for debugging
                     textbook['jsdelivr_works'] = result_data['jsdelivr_works']
-                    textbook['test_status_code'] = result_data['status_code']
             
             print(f"✅ URL testing completed and china_url fields updated")
         
@@ -908,7 +905,6 @@ def generate_javascript_file(textbook_data: List[Dict], output_file: str = 'text
 // URL Structure:
 // - international_url: GitHub direct (for international users)
 // - china_url: jsDelivr CDN or ghfast.top fallback (for China users)
-// - download_url: GitHub direct (backward compatibility)
 
 const TEXTBOOK_DATA = {json.dumps(textbook_data, ensure_ascii=False, indent=2)};
 

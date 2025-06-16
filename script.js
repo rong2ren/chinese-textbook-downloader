@@ -692,7 +692,7 @@ const UIComponents = {
         button.appendChild(document.createTextNode(` ${book.title}`));
         
         button.addEventListener('click', () => {
-            downloadFromUrl(book.download_url, book.file_name, book);
+            downloadFromUrl(getDownloadUrl(book), book.file_name, book);
         });
         
         return button;
@@ -947,8 +947,7 @@ function getDownloadUrl(book) {
         }
     } else {
         // For international users: Use pre-computed international_url (GitHub direct)
-        if (book.international_url) return book.international_url;
-        else return book.download_url;
+        return book.international_url;
     }
 }
 
