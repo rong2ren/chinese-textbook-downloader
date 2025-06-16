@@ -27,16 +27,10 @@
 
 ## ✨ 主要功能 | Key Features
 
-### 🌍 智能下载系统 | Smart Download System
+### 🌍 智能下载 | Smart Download
 - **自动地区检测** | Automatic location detection
 - **中国用户优化** | China-optimized with jsDelivr CDN + proxy fallback
 - **国际用户支持** | International users with direct GitHub access
-
-### ⚡ CDN 优化 | CDN Optimization
-- **4MB 数据文件** | 4MB data file served via jsDelivr CDN
-- **中国用户加速** | Faster loading for China users (50-80% improvement)
-- **自动备用** | Automatic fallback to local files if CDN fails
-- **全球加速** | Global performance boost via worldwide CDN
 
 ### 📚 完整教材库 | Complete Textbook Database
 **数据来源 | Data Source**: [TapXWorld/ChinaTextbook](https://github.com/TapXWorld/ChinaTextbook) - 完整的中国教材收藏 | Complete Chinese textbook collection
